@@ -16,6 +16,8 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import { AngularFirestoreModule, FirestoreSettingsToken } from 'angularfire2/firestore';
 import {environment} from 'src/environments/environment';
 
+import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
+
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
   signInOptions: [
@@ -41,7 +43,8 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    AngularFireAuthGuard
   ],
   bootstrap: [AppComponent]
 })
