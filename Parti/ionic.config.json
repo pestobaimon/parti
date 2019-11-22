@@ -1,0 +1,7 @@
+{
+  "name": "Parti",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

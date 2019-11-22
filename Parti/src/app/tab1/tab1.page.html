@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Tab One
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h2 *ngIf="afAuth.auth.currentUser"
+      >Welcome {{afAuth.auth.currentUser.displayName}}
+      </h2>
+  <ion-button *ngIf="afAuth.auth.currentUser" (click)="displayName()">log user name</ion-button> 
+  <ion-button *ngIf="afAuth.auth.currentUser" (click)="signOut()">Sign Out</ion-button> 
+  
+</ion-content>
