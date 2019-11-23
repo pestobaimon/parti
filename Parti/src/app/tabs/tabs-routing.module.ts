@@ -18,12 +18,12 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'friends',
+        path: 'user-profile',
         children: [
           {
             path: '',
             loadChildren: () =>
-              import('../friends/friends.module').then(m => m.FriendsPageModule)
+              import('../user-profile/user-profile.module').then(m => m.UserProfilePageModule)
           }
         ]
       },

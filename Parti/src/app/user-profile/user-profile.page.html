@@ -1,0 +1,14 @@
+<ion-content class ="ion-padding">
+  <div>
+    <h3 *ngIf="user.displayName">{{user.displayName}}</h3>
+    <ion-button (click)="goToChangeDisplayName()">change name</ion-button>
+  </div>
+  <img src="assets/img/jisoo.jpg" style="width: 160px;height: 240;" alt="your image">
+  
+  <div class="ion-padding">
+    <h6 class="ion-text-center">friends </h6><ion-button (click)="goToFindFriendsPage()">find friends</ion-button>
+    <div *ngIf="friends != []"><p *ngFor="let friend of friends">{{friend.displayName}}</p></div>
+  </div>
+
+
+</ion-content>

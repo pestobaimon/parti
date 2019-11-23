@@ -20,14 +20,6 @@ export class LoginPage implements OnInit {
    }
 
   ngOnInit() {
-    this.authService.user$.pipe(takeUntil(this.unsubscribe$)).subscribe(user =>{
-      if(user){
-        console.log('already signed in');
-        this.router.navigate(['/tabs']);
-      }else{
-        console.log('not signed in')
-      }
-    });
   }
 
 }

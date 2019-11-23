@@ -7,10 +7,9 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h2 *ngIf="authService.currentUser">
-    Welcome {{authService.currentUser.displayName}}
+  <h2 *ngIf="authService.user$">
+    Welcome {{user.displayName}}
   </h2>
-  <ion-button *ngIf="afAuth.auth.currentUser" (click)="displayName()">log user name</ion-button> 
   <ion-button *ngIf="afAuth.auth.currentUser" (click)="signOut()">Sign Out</ion-button> 
   <ion-button *ngIf="afAuth.auth.currentUser" (click)="getUser()">Get user data</ion-button> 
   <div>

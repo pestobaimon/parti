@@ -11,6 +11,8 @@ import { partiUser, partiGroup, parties } from '../../models/user.model'
 })
 export class PartiesPage {
 
+  user: any ={};
+
   constructor(
     public afAuth: AngularFireAuth,
     public authService: AuthService,
@@ -20,13 +22,13 @@ export class PartiesPage {
     uid: 'mockuid',
     displayName: 'Mon',
     email: 'baba@gmail.com',
-    friends: [this.authService.currentUser]
+    //friends: [this.authService.currentUser]
   }
   mockUser1: partiUser = {
     uid: 'mockuid',
     displayName: 'HaleeHuu',
     email: 'baba@gmail.com',
-    friends: [this.authService.currentUser]
+    //friends: [this.authService.currentUser]
   }
   mockParties1: parties = {
     partyId: "JnL19XnCnZnKdnou0AMn",
@@ -58,23 +60,20 @@ export class PartiesPage {
     this.mockParties1,
     this.mockParties2
   ]
-  displayName(){
-    console.log(this.authService.currentUser);
-  }
-  getUser(){
-    this.authService.saveUserToLocal();
-  }
   signOut(){
     this.afAuth.auth.signOut().then(()=>{
       location.reload();
     });
   }
   ngOnInit(){
-    /*if(!this.afAuth.auth.currentUser){
-      this.router.navigate(['/login'])
-    }*/
+    this.authService.user$.subscribe(currUser =>{
+      this.user = currUser;
+    })
   }
   goToPage(page:string){
     this.router.navigate([page]);
+  }
+  getUser(){
+    console.log(this.user);
   }
 }

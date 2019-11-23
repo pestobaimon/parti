@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Find Friends</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <div class= "ion-padding">
+      <ion-list class="background-input">
+          <ion-item>
+            <ion-input type="text" class="ion-text-left" placeholder="Email" name="email" [(ngModel)]="email"></ion-input>
+          </ion-item>
+          <div class="ion-padding">
+            <div class="ion-text-center">
+              <ion-button (click)="findUser(email)">Find Friend</ion-button>
+            </div>
+          </div>
+      </ion-list>
+  </div>
+  <div class="ion-padding">
+    <h5 class="ion-text-center" *ngIf="friendList">friend list</h5>
+  </div>
+  <div>
+    <ion-card *ngFor="let friend of friendList">
+      <ion-item>
+        <ion-label>{{friend.displayName}}</ion-label>
+        <ion-button fill="outline" slot="end" (click)="addUser(friend.uid)">Add</ion-button>
+      </ion-item>
+    </ion-card>
+  </div>
+  <ion-button (click)="goToProfilePage()">Back</ion-button>
+</ion-content>

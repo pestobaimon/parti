@@ -5,6 +5,7 @@ import { partiUser } from '../models/user.model'
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators'
 import { Router } from '@angular/router';
+import { AlertService } from './alert.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
         private afAuth : AngularFireAuth,
         private afs: AngularFirestore,
         private router: Router,
+        private alertService: AlertService
 
     ){
         this.user$ = this.afAuth.authState.pipe(
@@ -37,7 +39,6 @@ export class AuthService {
                             friends: value.get('friends'),
                             groups: value.get('groups')
                         };
-                        this.currentUser = data;
                     }else{
                         const data : partiUser = {
                             uid: user.uid,
@@ -48,16 +49,14 @@ export class AuthService {
                         };
                         this.setUserData(data).catch(error =>{
                             console.log(error);
-                            router.navigate(['/login']);
+                            router.navigate(['/user-creation']);
                         });
-                        this.saveUserToLocal();
                     }
                 });
             }   
         });
     }
     authState = new BehaviorSubject(false);
-    currentUser: partiUser;
     
     user$: Observable<partiUser>;
     public setUserData(user: partiUser) {
@@ -68,35 +67,23 @@ export class AuthService {
         return this.afs.doc<partiUser>(`users/${user.uid}`).update(user);
       }
     
+    updateDisplayName(name:string){
+        this.afAuth.authState.pipe(take(1)).subscribe(user =>{
+            if(user){
+                const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+                    `users/${user.uid}`
+                );
+                userRef.update({"displayName":name});
+                this.alertService.inputAlert('Display name changed!');
+            }
+        });
+    }
     login(){
 
     }
 
     logout(){
         
-    }
-
-    saveUserToLocal(){
-        this.afAuth.authState.pipe(take(1)).subscribe(user =>{
-            if(user){
-                const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-                    `users/${user.uid}`
-                );
-                userRef.ref.get().then(value => {
-                    if(value.exists){
-                        const data : partiUser = {
-                            uid: user.uid,
-                            email: user.email,
-                            displayName: value.get('displayName'),
-                            friends: value.get('friends'),
-                            groups: value.get('groups')
-                        };
-                        this.currentUser = data;
-                    }
-                });
-            }
-                    
-        });
     }
 
 }
