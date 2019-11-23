@@ -21,7 +21,6 @@ export class UserProfilePage implements OnInit {
   ngOnInit() {
     this.authService.user$.subscribe(userdata=>{
       this.user = userdata;
-      console.log(this.user);
       if(userdata.friends){
         userdata.friends.forEach(friend => {
           friend.get().then(res =>{
@@ -31,7 +30,6 @@ export class UserProfilePage implements OnInit {
               email: res.data().email,
             }
             this.friends.push(f);
-            console.log(this.friends);
           })
         }); 
       }
