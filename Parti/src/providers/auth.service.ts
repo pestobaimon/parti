@@ -4,15 +4,13 @@ import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firesto
 import { partiUser } from '../models/user.model'
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators'
-import { Router } from '@angular/router';
 import { AlertService } from './alert.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
     constructor(
         private afAuth : AngularFireAuth,
-        private afs: AngularFirestore,
-        private router: Router,
+        private afs: AngularFirestore,        
         private alertService: AlertService
 
     ){
@@ -49,7 +47,6 @@ export class AuthService {
                         };
                         this.setUserData(data).catch(error =>{
                             console.log(error);
-                            router.navigate(['/user-creation']);
                         });
                     }
                 });

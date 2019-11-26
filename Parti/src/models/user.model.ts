@@ -10,6 +10,7 @@ export interface partiUser {
 export interface partiGroup {
     groupName: string;
     members: Array<DocumentReference>;
+    groupId: string;
 }
 export interface parties {
     partyId: string;

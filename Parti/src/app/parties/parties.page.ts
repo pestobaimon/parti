@@ -12,6 +12,7 @@ import { partiUser, partiGroup, parties } from '../../models/user.model'
 export class PartiesPage {
 
   user: any ={};
+  displayNameRetrvd: boolean = false;
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -68,6 +69,7 @@ export class PartiesPage {
   ngOnInit(){
     this.authService.user$.subscribe(currUser =>{
       this.user = currUser;
+      this.displayNameRetrvd = true;
     })
   }
   goToPage(page:string){
