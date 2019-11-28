@@ -2,15 +2,18 @@ import { DocumentReference } from 'angularfire2/firestore';
 
 export interface partiUser {
     uid: string;
-    displayName?: string;
-    email?: string;
-    friends?: Array<DocumentReference>;
-    groups?: Array<DocumentReference>;
+    displayName: string;
+    email: string;
+    friends?: any [];
+    groups?: any [];
+    friendIds?: string [];
 }
 export interface partiGroup {
-    groupName: string;
-    members: Array<DocumentReference>;
+    groupName: string;  
+    members: any [];
     groupId: string;
+    creator: {},
+    memberIds:string []
 }
 export interface parties {
     partyId: string;

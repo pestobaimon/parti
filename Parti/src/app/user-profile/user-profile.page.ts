@@ -9,31 +9,19 @@ import { Router } from '@angular/router';
   templateUrl: './user-profile.page.html',
   styleUrls: ['./user-profile.page.scss'],
 })
-export class UserProfilePage implements OnInit {
-  user: any = {};
-  friends = [];
-
+export class UserProfilePage {
+  user: partiUser;
+  friends: Array<any>;
   constructor(
     private authService: AuthService,
     private router : Router
   ) { }
 
   ngOnInit() {
-    this.authService.user$.subscribe(userdata=>{
-      this.user = userdata;
-      if(userdata.friends){
-        userdata.friends.forEach(friend => {
-          friend.get().then(res =>{
-            let f: partiUser ={
-              uid: res.data().uid,
-              displayName: res.data().displayName,
-              email: res.data().email,
-            }
-            this.friends.push(f);
-          })
-        }); 
-      }
-    })
+    this.authService.user$.subscribe(currUser => {
+      this.user = currUser;
+      this.friends = this.user.friends;
+    });
   }
 
   goToFindFriendsPage(){

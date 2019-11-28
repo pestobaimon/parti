@@ -23,7 +23,7 @@
     <ion-card *ngFor="let friend of friendList">
       <ion-item>
         <ion-label>{{friend.displayName}}</ion-label>
-        <ion-button fill="outline" slot="end" (click)="addUser(friend.uid)">Add</ion-button>
+        <ion-button fill="outline" slot="end" (click)="addUser(friend)">Add</ion-button>
       </ion-item>
     </ion-card>
   </div>

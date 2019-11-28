@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h2 *ngIf="displayNameRetrvd">
+  <h2 *ngIf="user">
     Welcome {{user.displayName}}
   </h2>
   <ion-button *ngIf="afAuth.auth.currentUser" (click)="signOut()">Sign Out</ion-button> 

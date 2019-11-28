@@ -2,9 +2,11 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore, DocumentReference } from 'angularfire2/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from './alert.service';
-import { partiGroup } from '../models/user.model';
+import { partiGroup, partiUser } from '../models/user.model';
 import { AuthService } from './auth.service';
 import { switchMap, take } from 'rxjs/operators'
+import { Observable } from 'rxjs';
+import * as firebase from 'firebase';
 
 @Injectable({providedIn:'root'})
 export class GroupService{
@@ -15,54 +17,39 @@ export class GroupService{
         private authService: AuthService
     ){
     }
-    groups: Array<DocumentReference>;
-    createGroup(groupNameIn:string,memberList:Array<string>){
-        let membersRef:Array<DocumentReference>=[];
-        memberList.forEach(uid=>{
-            membersRef.push(this.afs.doc('users/' + uid).ref);
+    group$: Observable<partiGroup>;
+    createGroup(groupNameIn:string,members:Array<any>){
+        let membersStripped=[];
+        let memberIdArr:Array<string> = [];
+        members.forEach(member=>{
+            membersStripped.push(this.stripUserData(member));
+            memberIdArr.push(member.uid);
         });
-        let group: partiGroup = {
+        const group: partiGroup = 
+        {
             groupName: groupNameIn,
-            members: membersRef,
             groupId: '',
-        };
-        this.afs.collection('groups').add(group).then(docRef=> {
-            docRef.update({groupId:docRef.id});
-            console.log('group created!');
-            memberList.forEach(uid=>{
-                this.addGroup(uid,docRef);
-                console.log('group added to '+uid);
-            })
-            
+            members: membersStripped,
+            creator: membersStripped[0],
+            memberIds: memberIdArr
+        }
+        this.afs.collection('groups').add(group).then(data => {
+            data.update({groupId :data.id});
         });
-
+        this.alertService.inputAlert('group created');
+        console.log('group created');
     }
-    addGroup(uid:string,docRef:DocumentReference){
-        this.afs.collection('users').doc(uid).get().subscribe(data=>{
-            if(data.get('groups')){
-                let currGroups:Array<DocumentReference> = data.get('groups');
-                currGroups.push(docRef);
-                this.afs.collection('users').doc(uid).update({'groups':currGroups});
-            }else{
-                this.afs.collection('users').doc(uid).update({'groups':[docRef]});
-            }
+    addMembers(id:string,members:Array<any>){
+        var groupRef = this.afs.collection('groups').doc(id);
+        groupRef.update({
+            members: firebase.firestore.FieldValue.arrayUnion(members)
         });
     }
-    addMembers(groupId:string,memberList:Array<string>){
-        let membersRef:Array<DocumentReference>=[];
-        memberList.forEach(uid=>{
-            membersRef.push(this.afs.doc('users/' + uid).ref);
-        });
-        this.afs.collection('groups').doc(groupId).get().subscribe(data=>{
-            let currMembers:Array<DocumentReference> = data.get('members');
-            currMembers.concat(membersRef);
-            this.afs.collection('groups').doc(groupId).update({'members':currMembers});
-        })
-    }
-    getGroups(){
-        const user = this.afAuth.auth.currentUser.uid;
-        this.afs.collection('users').doc(user).get().subscribe(data=>{
-            this.groups = data.get('groups');
-        });
+    stripUserData(user:partiUser){
+        return {
+            displayName: user.displayName,
+            uid:user.uid,
+            email:user.email
+        }
     }
 }

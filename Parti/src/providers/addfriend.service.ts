@@ -2,60 +2,64 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from './alert.service';
+import { AuthService } from './auth.service';
+import { take } from 'rxjs/operators'
+import { partiUser } from '../models/user.model';
+import * as firebase from 'firebase';
+
 
 @Injectable({providedIn:'root'})
 export class AddFriendService{
     constructor(
         private afs : AngularFirestore,
         private afAuth : AngularFireAuth,
-        private alertService: AlertService
-    ){}
-    friendExists: boolean;
-    addFriend(friendUid:string){
-        const friendRef = this.afs.doc('users/' + friendUid).ref;
-        const userUid = this.afAuth.auth.currentUser.uid;
-        const userRef = this.afs.doc('users/' + userUid).ref;
-        this.afs.collection('users').doc(userUid).get().subscribe( data => {
-            if(!data){
-                return false;
+        private alertService: AlertService,
+        private authService: AuthService
+    ){
+        this.authService.user$.subscribe(data=>{
+            if(data){
+                this.user=data;
             }
-            let friendList = data.get("friends");
+        })
+    }
+    user:partiUser;
+    friendExists: boolean;
+    
+    addFriend(friendIn:partiUser){
+        this.authService.user$.pipe(take(1)).subscribe(user=>{
             this.friendExists = false;
-            friendList.forEach(a=>{
-                if(a.id==friendRef.id){
+            user.friends.forEach(friend=>{
+                if(friend.uid == friendIn.uid){
                     this.friendExists = true;
+                    this.alertService.inputAlert('Already in friend list!');
                 }
             });
             if(!this.friendExists){
-                friendList.push(friendRef);
-                this.afs.collection('users').doc(userUid).update({"friends": friendList});
-                console.log('friend added');
-                this.alertService.inputAlert('Friend Added!');
-            }else{
-                console.log('friend already exists');
-                this.alertService.inputAlert('Already in friend list!');
+                let userData = {
+                    displayName: user.displayName,
+                    uid: user.uid,
+                    email: user.email
+                }
+                let friendData = {
+                    displayName: friendIn.displayName,
+                    uid: friendIn.uid,
+                    email: friendIn.email
+                }
+                this.afs.collection('users').doc(user.uid).update({
+                    friends: firebase.firestore.FieldValue.arrayUnion(friendData)
+                });
+                this.afs.collection('users').doc(friendIn.uid).update({
+                    friends: firebase.firestore.FieldValue.arrayUnion(userData)
+                });
+                this.afs.collection('users').doc(user.uid).update({
+                    friendIds: firebase.firestore.FieldValue.arrayUnion(friendData.uid)
+                });
+                this.afs.collection('users').doc(friendIn.uid).update({
+                    friendIds: firebase.firestore.FieldValue.arrayUnion(userData.uid)
+                });
+                this.alertService.inputAlert('Friend added!');
             }
         });
 
-        this.afs.collection('users').doc(friendUid).get().subscribe( data => {
-            if(!data){
-                return false;
-            }
-            let friendList = data.get("friends");
-            this.friendExists = false;
-            friendList.forEach(a=>{
-                if(a.id==userRef.id){
-                    this.friendExists = true;
-                }
-            });
-            if(!this.friendExists){
-                friendList.push(userRef);
-                this.afs.collection('users').doc(friendUid).update({"friends": friendList});
-                console.log('friend added');
-            }else{
-                console.log('friend already exists');
-            }
-        });
-        
-    }
+   }
 }

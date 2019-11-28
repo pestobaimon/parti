@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AddFriendService } from '../../providers/addfriend.service';
 import { AlertService } from '../../providers/alert.service';
+import { partiUser } from '../../models/user.model';
+import { take } from 'rxjs/operators'
 
 
 @Component({
@@ -38,6 +40,7 @@ export class FindFriendsPage implements OnInit {
       else{
         return this.afs.collection('users', ref => ref.where('email', '==' , email ))
           .snapshotChanges()
+          .pipe(take(1))
           .subscribe(response => {
               if(!response){
                   console.log('user not found');            
@@ -56,7 +59,7 @@ export class FindFriendsPage implements OnInit {
   goToProfilePage(){
     this.router.navigate(['/tabs/user-profile']);
   }
-  addUser(uid:string){
-    this.addFriendService.addFriend(uid);
+  addUser(friend:partiUser){
+    this.addFriendService.addFriend(friend);
   }
 }

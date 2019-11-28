@@ -30,13 +30,7 @@ export class AuthService {
                 );
                 userRef.ref.get().then(value => {
                     if(value.exists){
-                        const data : partiUser = {
-                            uid: user.uid,
-                            email: user.email,
-                            displayName: value.get('displayName'),
-                            friends: value.get('friends'),
-                            groups: value.get('groups')
-                        };
+                        console.log('user already exists, no data added');
                     }else{
                         const data : partiUser = {
                             uid: user.uid,

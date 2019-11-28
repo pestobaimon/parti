@@ -11,8 +11,7 @@ import { partiUser, partiGroup, parties } from '../../models/user.model'
 })
 export class PartiesPage {
 
-  user: any ={};
-  displayNameRetrvd: boolean = false;
+  user: partiUser;
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -67,10 +66,9 @@ export class PartiesPage {
     });
   }
   ngOnInit(){
-    this.authService.user$.subscribe(currUser =>{
+    this.authService.user$.subscribe(currUser => {
       this.user = currUser;
-      this.displayNameRetrvd = true;
-    })
+    });
   }
   goToPage(page:string){
     this.router.navigate([page]);
