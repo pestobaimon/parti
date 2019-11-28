@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Groups
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="groups">
+    <ion-item *ngFor="let group of groups">{{group.groupName}}</ion-item>
+  </ion-list>
+  <ion-button (click)="createGroup()">Create Group</ion-button>
+</ion-content>

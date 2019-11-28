@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth'
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { partiUser } from '../models/user.model'
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators'
-import { Router } from '@angular/router';
+import { AlertService } from './alert.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
     constructor(
         private afAuth : AngularFireAuth,
-        private afs: AngularFirestore,
-        private router: Router
+        private afs: AngularFirestore,        
+        private alertService: AlertService
 
     ){
         this.user$ = this.afAuth.authState.pipe(
@@ -30,32 +30,25 @@ export class AuthService {
                 );
                 userRef.ref.get().then(value => {
                     if(value.exists){
-                        const data : partiUser = {
-                            uid: user.uid,
-                            email: user.email,
-                            displayName: user.displayName
-                        };
-                        const uid = user.uid;
-                        const updatedUser = {uid, ...value.data()};
-                        this.updateUserData(updatedUser).catch(error => {
-                            console.log(error);
-                            router.navigate(['/login']);
-                        });
+                        console.log('user already exists, no data added');
                     }else{
                         const data : partiUser = {
                             uid: user.uid,
                             email: user.email,
-                            displayName: user.displayName
+                            displayName: user.displayName,
+                            friends: [],
+                            groups: []
                         };
                         this.setUserData(data).catch(error =>{
                             console.log(error);
-                            router.navigate(['/login']);
                         });
                     }
                 });
             }   
         });
     }
+    authState = new BehaviorSubject(false);
+    
     user$: Observable<partiUser>;
     public setUserData(user: partiUser) {
         return this.afs.doc<partiUser>(`users/${user.uid}`).set(user);
@@ -64,6 +57,24 @@ export class AuthService {
     private updateUserData(user: partiUser) {
         return this.afs.doc<partiUser>(`users/${user.uid}`).update(user);
       }
-
     
+    updateDisplayName(name:string){
+        this.afAuth.authState.pipe(take(1)).subscribe(user =>{
+            if(user){
+                const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+                    `users/${user.uid}`
+                );
+                userRef.update({"displayName":name});
+                this.alertService.inputAlert('Display name changed!');
+            }
+        });
+    }
+    login(){
+
+    }
+
+    logout(){
+        
+    }
+
 }
