@@ -53,6 +53,10 @@ const routes: Routes = [
   {
     path: 'create-group',
     loadChildren: () => import('./create-group/create-group.module').then( m => m.CreateGroupPageModule)
+  },
+  {
+    path: 'edit-group',
+    loadChildren: () => import('./edit-group/edit-group.module').then( m => m.EditGroupPageModule)
   }
 ];
 @NgModule({

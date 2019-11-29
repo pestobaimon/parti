@@ -5,15 +5,14 @@ export interface partiUser {
     displayName: string;
     email: string;
     friends?: any [];
-    groups?: any [];
     friendIds?: string [];
 }
 export interface partiGroup {
     groupName: string;  
     members: any [];
     groupId: string;
-    creator: {},
-    memberIds:string []
+    creator: any;
+    memberIds:string [];
 }
 export interface parties {
     partyId: string;

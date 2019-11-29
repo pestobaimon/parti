@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CreateGroupPageRoutingModule } from './create-group-routing.module';
+import { EditGroupPageRoutingModule } from './edit-group-routing.module';
 
-import { CreateGroupPage } from './create-group.page';
+import { EditGroupPage } from './edit-group.page';
 
 
 @NgModule({
@@ -14,9 +14,9 @@ import { CreateGroupPage } from './create-group.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    CreateGroupPageRoutingModule,
+    EditGroupPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [CreateGroupPage]
+  declarations: [EditGroupPage]
 })
-export class CreateGroupPageModule {}
+export class EditGroupPageModule {}

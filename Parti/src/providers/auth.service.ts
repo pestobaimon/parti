@@ -37,7 +37,6 @@ export class AuthService {
                             email: user.email,
                             displayName: user.displayName,
                             friends: [],
-                            groups: []
                         };
                         this.setUserData(data).catch(error =>{
                             console.log(error);

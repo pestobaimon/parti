@@ -1,26 +1,27 @@
-<ion-item>
-  <ion-input type="text" class="ion-text-left" placeholder="Group name"[(ngModel)]="groupName"></ion-input>
-</ion-item>
-<form [formGroup]="form">
-  <ion-list>
-    <ion-item *ngFor="Let friend of friends">
-      <ion-label>
-        {{friend.displayName}}
-      </ion-label>
-      <ion-checkbox [formControlName]="friend"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-      <button ion-button type="button" (click)="createGroup(groupName)"></button>
-    </ion-item>
-
-  </ion-list>
-</form>
 <ion-header>
-  <ion-toolbar>
-    <ion-title>createGroup</ion-title>
-  </ion-toolbar>
-</ion-header>
+    <ion-toolbar>
+      <ion-title>Group Creation</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-content>
-
+  <ion-content class="ion-padding">
+  <div class="background-input">
+    <ion-item>
+        <ion-input type="text" class="ion-text-left" placeholder="Group name" name="groupName" [(ngModel)]="groupName"></ion-input>
+    </ion-item>  
+  </div>
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="createGroup(groupName)">
+    <ion-list>
+      <ion-item *ngFor="let friend of friendArray">
+        <ion-label>
+          {{friend.displayName}}
+        </ion-label>
+        <ion-checkbox [formControlName]="friend.uid"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+    <ion-item>
+      <ion-button ion-button type="submit">Create Group</ion-button>
+    </ion-item>
+  </form>
+  <ion-button type="button" (click)="goToGroupsPage()">back</ion-button>
 </ion-content>
