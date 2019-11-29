@@ -4,7 +4,6 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from './alert.service';
 import { partiGroup, partiUser } from '../models/user.model';
 import { AuthService } from './auth.service';
-import { switchMap, take } from 'rxjs/operators'
 import { Observable } from 'rxjs';
 import * as firebase from 'firebase';
 

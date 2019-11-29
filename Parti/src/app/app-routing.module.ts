@@ -49,6 +49,10 @@ const routes: Routes = [
     loadChildren: () => import('./find-friends/find-friends.module').then( m => m.FindFriendsPageModule),
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
+    path: 'create-group',
+    loadChildren: () => import('./create-group/create-group.module').then( m => m.CreateGroupPageModule)
   }
 ];
 @NgModule({

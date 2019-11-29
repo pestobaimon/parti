@@ -1,0 +1,26 @@
+<ion-item>
+  <ion-input type="text" class="ion-text-left" placeholder="Group name"[(ngModel)]="groupName"></ion-input>
+</ion-item>
+<form [formGroup]="form">
+  <ion-list>
+    <ion-item *ngFor="Let friend of friends">
+      <ion-label>
+        {{friend.displayName}}
+      </ion-label>
+      <ion-checkbox [formControlName]="friend"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <button ion-button type="button" (click)="createGroup(groupName)"></button>
+    </ion-item>
+
+  </ion-list>
+</form>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>createGroup</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+</ion-content>
