@@ -17,6 +17,7 @@ export class CreateGroupPage implements OnInit {
   user:partiUser;
   friendArray: Array<any>;
   groupMembers: Array<any>;
+  groupName:string;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
