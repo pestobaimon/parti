@@ -28,6 +28,7 @@ export class FindFriendsPage implements OnInit {
   }
 
   friendList: Array<any>;
+  email:string;
   
   findUser(email:string){
     this.authService.user$.subscribe( currUser =>{

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class UserCreationPage implements OnInit {
 
+  displayName:string;
   constructor(
     private authService : AuthService,
     private alertService : AlertService,
