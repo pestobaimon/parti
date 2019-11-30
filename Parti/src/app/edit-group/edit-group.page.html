@@ -7,12 +7,12 @@
 <ion-content class="ion-padding">
   <div>
     <h3>Members</h3>
-    <ion-list *ngFor="let member of members">
+    <ion-list *ngFor="let member of membersWithoutCurrUser">
       <ion-item>
           <ion-label>
             {{member.displayName}} 
           </ion-label>
-          <ion-button fill="outline" slot="end" (click)="removeMember(member.uid)">remove from group</ion-button>
+          <ion-button fill="outline" slot="end" (click)="confirmRemove(member.uid,member.displayName)">remove from group</ion-button>
       </ion-item>
     </ion-list>
   </div>
@@ -31,4 +31,5 @@
       </form>
   </div>
   <ion-button (click)="back()">Back</ion-button>
+  <ion-button (click)="leaveGroup()" >Leave Group</ion-button>
 </ion-content>

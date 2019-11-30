@@ -16,10 +16,13 @@
           </div>
       </ion-list>
   </div>
-  <div class="ion-padding">
-    <h5 class="ion-text-center" *ngIf="friendList">friend list</h5>
-  </div>
-  <div>
+
+
+  <div class="ion-padding" *ngIf="friendList">
+    <h5 class="ion-text-center">Result</h5>
+      <ion-item *ngIf="!friendList.length">
+          <ion-label class="ion-text-center">Friend not found</ion-label>
+      </ion-item>
     <ion-card *ngFor="let friend of friendList">
       <ion-item>
         <ion-label>{{friend.displayName}}</ion-label>

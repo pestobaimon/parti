@@ -6,6 +6,7 @@ import { partiUser, partiGroup } from '../../models/user.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';
+import { AlertService } from '../../providers/alert.service';
 
 @Component({
   selector: 'app-edit-group',
@@ -20,10 +21,12 @@ export class EditGroupPage implements OnInit {
     private authService: AuthService,
     private afs: AngularFirestore,
     private router: Router,
-    private events: Events
+    private events: Events,
+    private alertService: AlertService
   ) {}
   addUserForm:FormGroup;
   members:Array<any>;
+  membersWithoutCurrUser:Array<any>;
   nonMembers:Array<any>;
   groupId:string = this.groupService.groupToEdit;
   group:partiGroup;
@@ -36,19 +39,24 @@ export class EditGroupPage implements OnInit {
         .subscribe(data=>{
           this.group = data;
           this.members = data.members;
-          let memberIds = []
+          this.membersWithoutCurrUser = [];
+          let memberIds = [];
           this.members.forEach(member=>{
             memberIds.push(member.uid);
-          })
+            if(member.uid != this.user.uid){
+              this.membersWithoutCurrUser.push(member);
+            }
+          });
           this.nonMembers = [];
           let fbNonMemberArgs = {};
           this.nonMembers = this.user.friends.filter(item => memberIds.indexOf(item.uid) < 0);
           this.nonMembers.forEach(user => {
             fbNonMemberArgs[user.uid] = []
           });
+
           this.addUserForm = this.fb.group(fbNonMemberArgs);
         })
-    })
+    });
   }
   addMembers(){
     let membersToAdd:Array<any> = [];
@@ -71,10 +79,23 @@ export class EditGroupPage implements OnInit {
     });
     this.groupService.updateMembers(this.groupId,newMembers,newMemberIds);
   }
+  confirmRemove(memberUidToRemove:string,memberName:string){
+    this.alertService.removeMemberAlert(memberName);
+    this.events.subscribe('user:removeMember',()=>{
+      this.removeMember(memberUidToRemove);
+    });
+  }
   back(){
     this.router.navigate(['tabs/groups'])
       .then(() => {
         this.events.publish('group:edited');
+    });
+  }
+  leaveGroup(){
+    this.alertService.leaveGroupAlert();
+    this.events.subscribe('user:leaveGroup',()=>{
+      this.removeMember(this.user.uid);
+      this.back();
     });
   }
 }
