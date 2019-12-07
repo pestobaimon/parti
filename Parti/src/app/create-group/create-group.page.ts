@@ -32,10 +32,9 @@ export class CreateGroupPage implements OnInit {
       this.user.friends.forEach(friend=>{
         this.friendArray.push(friend);
       });
-      console.log(this.friendArray);
+      //console.log(this.friendArray);
       this.friendArray.forEach(friend => {
         fbargs[friend.uid] = []});
-        console.log(fbargs);
       this.form = this.fb.group(fbargs);
     })
   }

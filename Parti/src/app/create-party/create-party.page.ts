@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class CreatePartyPage implements OnInit {
 
-	@ViewChild('signupSlider') signupSlider;
+	@ViewChild('signupSlider',{static:false}) signupSlider;
 
 	public slideOneForm: FormGroup;
 	public slideTwoForm: FormGroup;
