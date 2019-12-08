@@ -3,9 +3,14 @@
     <ion-title class='ion-text-center'>
       Profile
     </ion-title>
+    <ion-buttons slot="end">
+        <ion-button (click)="signOut()"><ion-icon slot="start" name="log-out"></ion-icon> Sign Out</ion-button>
+    </ion-buttons>
+    <div slot='end'class="div-comp"></div>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
+
   <div>
     <img src="assets/img/jisoo.jpg" style="width: 160px;height: 240;" alt="your image">
     <ion-item lines="none">

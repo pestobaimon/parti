@@ -40,11 +40,6 @@ export class PartiesPage {
   pendingParties: Array<any> =[];
   itemExpandHeight: number = 200;
 
-  signOut(){
-    this.afAuth.auth.signOut().then(()=>{
-      location.reload();
-    });
-  }
   ngOnInit(){
     this.authService.user$.subscribe(currUser => {
       this.user = currUser;

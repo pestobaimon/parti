@@ -61,6 +61,31 @@ export class AlertService{
     console.log(result)
   }
 
+  async SignOutAlert(){
+    const alert = await this.alertController.create({
+      message: "Sign out?",
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            this.events.publish('user:logout');
+          }
+        }
+      ]
+    });
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result)
+  }
+
   async removeMemberAlert(name:string){
     const alert = await this.alertController.create({
       message: ("Remove "+name+" from group?"),
