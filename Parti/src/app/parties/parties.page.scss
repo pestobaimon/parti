@@ -1,4 +1,21 @@
-.welcome-card img {
-  max-height: 35vh;
-  overflow: hidden;
+.item-tint {
+  --ion-background-color: var(--ion-color-light);
 }
+.button-color{
+}
+
+.parti-card {
+  ion-list {
+    padding: 0;
+  }
+}
+
+// Add percentage of white to a color
+@function tint($color, $percent){
+  @return mix(white, $color, $percent);
+}
+
+// Add percentage of black to a color
+@function shade($color, $percent){
+  @return mix(black, $color, $percent);
+} 

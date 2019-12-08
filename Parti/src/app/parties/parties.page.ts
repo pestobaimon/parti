@@ -3,6 +3,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
 import { partiUser, partiGroup, parties } from '../../models/user.model'
+import { partiService } from '../../providers/parti.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-parties',
@@ -14,52 +16,30 @@ export class PartiesPage {
   user: partiUser;
 
   constructor(
-    public afAuth: AngularFireAuth,
-    public authService: AuthService,
-    public router: Router) {}
+    private afAuth: AngularFireAuth,
+    private authService: AuthService,
+    private router: Router,
+    private partiService: partiService
+    ) {
+      this.partiService.parties$.subscribe(data=>{
+        data.forEach(party=>{
+          party["expanded"]=false;
+        });
+        this.parties = data;
+      });
+      this.partiService.pendingParties$.subscribe(data=>{
+        data.forEach(party=>{
+          party["expanded"]=false;
+        });
+        this.pendingParties = data;
+        console.log(this.pendingParties);
+      });
+    }
   
-  mockUser0: partiUser = {
-    uid: 'mockuid',
-    displayName: 'Mon',
-    email: 'baba@gmail.com',
-    //friends: [this.authService.currentUser]
-  }
-  mockUser1: partiUser = {
-    uid: 'mockuid',
-    displayName: 'HaleeHuu',
-    email: 'baba@gmail.com',
-    //friends: [this.authService.currentUser]
-  }
-  mockParties1: parties = {
-    partyId: "JnL19XnCnZnKdnou0AMn",
-    partyName: "TrueCoffe jaa",
-    partyType: "Study",
-    partyLeader: this.mockUser0, //for now let current user be leader
-    minMembers: 3,
-    maxMembers: 5,
-    memberCount: 1,
-    friends: [],
-    time: new Date(Date.UTC(2019, 11, 20, 3, 0, 0)),
-    exptime: new Date(Date.UTC(2019, 11, 19, 3,0,0)),
-    place: "True Coffee Scala"
-  }
-  mockParties2: parties = {
-    partyId: "hadiajdklasdnkl",
-    partyName: "อ่านหนังสือกันเถอะ",
-    partyType: "Study",
-    partyLeader: this.mockUser0, //for now let current user be leader
-    minMembers: 3,
-    maxMembers: 5,
-    memberCount: 1,
-    friends: [],
-    time: new Date(Date.UTC(2019, 11, 20, 3, 0, 0)),
-    exptime: new Date(Date.UTC(2019, 11, 19, 3,0,0)),
-    place: "โต๊ะส้ม"
-  }
-  parties: Array<parties> = [
-    this.mockParties1,
-    this.mockParties2
-  ]
+  parties: Array<any> = [];
+  pendingParties: Array<any> =[];
+  itemExpandHeight: number = 200;
+
   signOut(){
     this.afAuth.auth.signOut().then(()=>{
       location.reload();
@@ -76,4 +56,26 @@ export class PartiesPage {
   getUser(){
     console.log(this.user);
   }
+  convertTimeStamp(timestamp:any){
+    const time = Number(timestamp.seconds);
+    return moment.unix(time).format('DD/MM/YYYY');
+  }
+
+  expandToggle(obj:any,type:string){
+    if(type=="card"){
+      if(obj.expanded){
+        obj.memberExpanded = !obj.memberExpanded;
+      }
+      obj.expanded = !obj.expanded;
+    }else{
+      obj.memberExpanded = !obj.memberExpanded;
+    }
+  }
+  joinParty(party:parties){
+    this.partiService.joinParti(party);
+  }
+  showMembers(obj:any){
+
+  }
+
 }

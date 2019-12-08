@@ -1,13 +1,17 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title *ngIf="group">{{group.groupName}}</ion-title>
-  </ion-toolbar>
-</ion-header>
+    <ion-toolbar color="primary">
+        <ion-title *ngIf="group" class="ion-text-center">{{group.groupName}}</ion-title>
+      <ion-buttons slot="start">
+        <ion-button (click)="back()"><ion-icon slot="start" name="arrow-back"></ion-icon> Back</ion-button>
+      </ion-buttons>
+      <div slot='end'class="div-comp"></div>
+    </ion-toolbar>
+  </ion-header>
 
 <ion-content class="ion-padding">
   <div>
     <h3>Members</h3>
-    <ion-list *ngFor="let member of membersWithoutCurrUser">
+    <ion-list *ngFor="let member of membersWithoutCurrUser" lines='none'>
       <ion-item>
           <ion-label>
             {{member.displayName}} 
@@ -19,7 +23,7 @@
   <div *ngIf="nonMembers && nonMembers.length">
       <h3>Non Members</h3>
       <form *ngIf="addUserForm" [formGroup]="addUserForm" (ngSubmit)="addMembers()">
-          <ion-list>
+          <ion-list lines="none">
             <ion-item *ngFor="let nonMember of nonMembers">
               <ion-label>
                 {{nonMember.displayName}}
@@ -27,9 +31,11 @@
               <ion-checkbox [formControlName]="nonMember.uid"></ion-checkbox>
             </ion-item>
           </ion-list>
-          <ion-button ion-button type="submit">add members</ion-button>
+          <div>
+            <ion-button ion-button type="submit" >add members</ion-button>
+            
+            <ion-button (click)="leaveGroup()" style="float:right">Leave Group</ion-button>
+          </div>
       </form>
   </div>
-  <ion-button (click)="back()">Back</ion-button>
-  <ion-button (click)="leaveGroup()" >Leave Group</ion-button>
 </ion-content>

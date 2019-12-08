@@ -1,129 +1,112 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>
-      Create Party
+    <ion-title class="ion-text-center">
+      Create Parti
     </ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="backToParties()"><ion-icon slot="start" name="arrow-back"></ion-icon> Back</ion-button>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button (click)="next()">Next <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
-    </ion-buttons>
+    <div slot='end'class="div-comp"></div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-
-<ion-slides #signupSlider pager>
-
-    <ion-slide>
-
-      <p *ngIf="submitAttempt" style="color: #ea6153;">Please fill out all details accurately.</p>
+<ion-content class="ion-padding">
 
       <ion-list lines="none">
 
-          <form [formGroup]="slideOneForm">
+        <form [formGroup]="partiForm">
 
-            <div class="line-input">
+        <div class="line-input" [class.line-input-invalid]="!partiForm.controls.partiName.valid  && (partiForm.controls.partiName.dirty || submitAttempt)">
+        <ion-item>
+            <ion-label position="floating">Parti Name</ion-label>
+            <ion-input formControlName="partiName" type="text" ></ion-input>
+        </ion-item>
+        </div>
+
+        <ion-item *ngIf="!partiForm.controls.partiName.valid  && (partiForm.controls.partiName.dirty || submitAttempt)">
+            <p style="color: #f04141;">Please enter a valid Parti Name.</p>
+        </ion-item>
+
+        <ion-item [class.item-select-invalid]="!partiForm.controls.partiType.valid  && (partiForm.controls.partiType.dirty || submitAttempt)">
+            <ion-label position="floating">Parti Type</ion-label>
+            <ion-select formControlName="partiType">
+                <ion-select-option value="study">Study</ion-select-option>
+                <ion-select-option value="chill">Chill</ion-select-option>
+                <ion-select-option value="eat">Eat</ion-select-option>
+                <ion-select-option value="drink">Drink</ion-select-option>
+                <ion-select-option value="movies">Movies</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item *ngIf="!partiForm.controls.partiType.valid  && (partiForm.controls.partiType.dirty || submitAttempt)">
+            <p style="color: #f04141;">Please choose a parti type.</p>
+        </ion-item>
+
+        <div class="line-input" [class.line-input-invalid]="!partiForm.controls.location.valid  && (partiForm.controls.location.dirty || submitAttempt)">
             <ion-item>
-                <ion-label position="floating">Parti Name</ion-label>
-                <ion-input formControlName="firstName" type="text" [class.invalid]="!slideOneForm.controls.firstName.valid && (slideOneForm.controls.firstName.dirty || submitAttempt)"></ion-input>
+                <ion-label position="floating">Location</ion-label>
+                <ion-input formControlName="location" type="text" ></ion-input>
             </ion-item>
-            </div>
+        </div>
 
-            <ion-item *ngIf="!slideOneForm.controls.firstName.valid  && (slideOneForm.controls.firstName.dirty || submitAttempt)">
-                <p>Please enter a valid Parti Name.</p>
-            </ion-item>
+        <ion-item *ngIf="!partiForm.controls.location.valid  && (partiForm.controls.location.dirty || submitAttempt)">
+            <p style="color: #f04141;">Please enter a valid location.</p>
+        </ion-item>
 
-            <div class="line-input">
-            <ion-item>
-                <ion-label position="floating">Last Name</ion-label>
-                <ion-input formControlName="lastName" type="text" [class.invalid]="!slideOneForm.controls.lastName.valid && (slideOneForm.controls.age.dirty || submitAttempt)"></ion-input>
-            </ion-item>
-            </div>
+        <ion-item [class.item-select-invalid]="minMoreThanMax || (!partiForm.controls.minMembers.valid  && (partiForm.controls.minMembers.dirty || submitAttempt))">
+            <ion-label position="floating">Minimum Members</ion-label>
+            <ion-select value="2" formControlName="minMembers">
+                <ion-select-option *ngFor="let num of minArray" value="{{num}}">{{num}}</ion-select-option>
+            </ion-select>
+        </ion-item>
 
-            <ion-item *ngIf="!slideOneForm.controls.lastName.valid  && (slideOneForm.controls.lastName.dirty || submitAttempt)">
-                <p>Please enter a valid name.</p>
-            </ion-item>
+        <ion-item *ngIf="!partiForm.controls.minMembers.valid  && (partiForm.controls.minMembers.dirty || submitAttempt)">
+            <p style="color: #f04141;">Please enter a valid location.</p>
+        </ion-item>
+        
+        <ion-item [class.item-select-invalid]="minMoreThanMax || (!partiForm.controls.maxMembers.valid  && (partiForm.controls.maxMembers.dirty || submitAttempt))">
+            <ion-label position="floating">Maximum Members</ion-label>
+            <ion-select value="unlimited" formControlName="maxMembers">
+                <ion-select-option value='unlimited'>Unlimited</ion-select-option>
+                <ion-select-option *ngFor="let num of maxArray" [value]="num">{{num}}</ion-select-option>
+            </ion-select>
+        </ion-item>
 
-            <ion-grid>
-                <ion-row>
-                    <ion-col>
-                        <div class="line-input">
-                            <ion-item>
-                                <ion-label position="floating">Minimum Members</ion-label>
-                                <ion-input formControlName="age" type="number" pattern="[2-9]*" [class.invalid]="!slideOneForm.controls.age.valid && (slideOneForm.controls.age.dirty || submitAttempt)"></ion-input>
-                            </ion-item>
-                        </div>
-                
-                        <ion-item *ngIf="!slideOneForm.controls.age.valid  && (slideOneForm.controls.age.dirty || submitAttempt)">
-                            <p>Please enter a valid age.</p>
-                        </ion-item>
-                    </ion-col>
-                    
-                    <ion-col>
-                        <div class="line-input">
-                                <ion-item>
-                                    <ion-label position="floating">Maximum Members</ion-label>
-                                    <ion-input formControlName="age" type="number" pattern="[2-9]*" [class.invalid]="!slideOneForm.controls.age.valid && (slideOneForm.controls.age.dirty || submitAttempt)"></ion-input>
-                                </ion-item>
-                        </div>
-                    
-                        <ion-item *ngIf="!slideOneForm.controls.age.valid  && (slideOneForm.controls.age.dirty || submitAttempt)">
-                            <p>Please enter a valid age.</p>
-                        </ion-item>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
+        <ion-item *ngIf="minMoreThanMax">
+            <p style="color: #f04141;">Maximum members cannot be less than minimum members.</p>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Parti Starts on</ion-label>
+            <ion-datetime display-format="DD/MM/YYYY, hh:mm A" picker-format="DD/MM/YYYY, hh:mm A" [min]="today" max="2020" placeholder="Select Date" formControlName="partiStart"></ion-datetime>
+        </ion-item>
+
+        <ion-item *ngIf="startDateSelected">
+            <ion-label position="floating">Parti expires</ion-label>
+            <ion-select [value]="hourArray[0]" formControlName="partiExpire">
+                <ion-select-option *ngFor="let num of hourArray" [value]="num">{{num}} hours before start time</ion-select-option>
+            </ion-select>
             
+        </ion-item> 
 
-          </form>
+        <ion-item *ngIf="groups">
+            <ion-label position="floating">Groups</ion-label>
+            <ion-select multiple="true" formControlName="groups">
+                <ion-select-option *ngFor="let group of groups" [value]="group">{{group.groupName}}</ion-select-option>
+            </ion-select>
+        </ion-item>
 
-      </ion-list>
-
-    </ion-slide>
-
-    <ion-slide>
-
-      <ion-list lines="none">
-
-          <form [formGroup]="slideTwoForm">
-
-              <ion-item>
-                  <ion-label position="floating">Party Name</ion-label>
-                  <ion-input [class.invalid]="!slideTwoForm.controls.username.valid && (slideTwoForm.controls.username.dirty || submitAttempt)" formControlName="username" type="text"></ion-input>
-              </ion-item>
-
-              <ion-item *ngIf="slideTwoForm.controls.username.pending">
-                  <p>Checking username...</p>
-              </ion-item>
-
-              <ion-item *ngIf="!slideTwoForm.controls.username.valid && !slideTwoForm.controls.username.pending && (slideTwoForm.controls.username.dirty || submitAttempt)">
-                  <p>Sorry, that username can not be used!</p>
-              </ion-item>
-
-              <ion-item>
-                  <ion-label position="floating">Privacy</ion-label>
-                  <ion-select [class.invalid]="!slideTwoForm.controls.privacy.valid && (slideTwoForm.controls.privacy.dirty || submitAttempt)" formControlName="privacy">
-                      <ion-select-option value="public" checked="true">Public</ion-select-option>
-                      <ion-select-option value="friends">Friends Only</ion-select-option>
-                      <ion-select-option value="private">Private</ion-select-option>
-                  </ion-select>
-              </ion-item>
-
-              <ion-item>
-                  <ion-label position="floating">Bio</ion-label>
-                  <ion-textarea formControlName="bio"></ion-textarea>
-              </ion-item>
-
-          </form>
+        <ion-item *ngIf="friendArray">
+            <ion-label position="floating">Friends</ion-label>
+            <ion-select multiple="true" formControlName="friends">
+                <ion-select-option *ngFor="let friend of friendArray" [value]="friend">{{friend.displayName}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        
+        </form>
 
       </ion-list>
 
-      <ion-button expand="full" color="primary" (click)="save()">Create Account!</ion-button>
-
-    </ion-slide>
-
-  </ion-slides>
+      <ion-button (click)="submitParti()">Start Parti!</ion-button>
 
 </ion-content>

@@ -86,4 +86,32 @@ export class AlertService{
     console.log(result)
   }
 
+  async createPartiAlert(){
+    const alert = await this.alertController.create({
+      message: ("Start Parti?"),
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            this.events.publish('parti:start');
+          }
+        }
+      ]
+    });
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result)
+  }
+
+  
+
+
 }

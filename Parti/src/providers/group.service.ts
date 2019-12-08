@@ -3,7 +3,6 @@ import { AngularFirestore, DocumentReference } from 'angularfire2/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from './alert.service';
 import { partiGroup, partiUser } from '../models/user.model';
-import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
@@ -13,11 +12,15 @@ export class GroupService{
     constructor(
         private afs: AngularFirestore,
         private alertService: AlertService,
-        private router: Router
+        private router: Router,
+        private afAuth: AngularFireAuth
     ){
+        this.groups$ = this.collection.valueChanges();
     }
+    collection = this.afs.collection('groups', ref => ref.where('memberIds','array-contains',this.afAuth.auth.currentUser.uid));
     group$: Observable<partiGroup>;
     groupToEdit:string;
+    groups$:Observable<any[]>;
     createGroup(groupNameIn:string,members:Array<any>){
         let membersStripped=[];
         let memberIdArr:Array<string> = [];

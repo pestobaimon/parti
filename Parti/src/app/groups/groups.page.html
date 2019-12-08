@@ -7,12 +7,13 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-list *ngIf="groups">
+  <ion-list *ngIf="groups" lines="none">
     <ion-item *ngFor="let group of groups"> 
         <ion-card class="big-cards" type="button" (click)="editGroup(group.groupId)">
-            <ion-item>
-              <ion-label>{{group.groupName}}</ion-label>
-            </ion-item>
+            <ion-card-header>
+              <ion-card-title>{{group.groupName}}</ion-card-title>
+              <ion-card-subtitle>{{group.members.length}} members</ion-card-subtitle>
+            </ion-card-header>
         </ion-card>
     </ion-item>
   </ion-list>

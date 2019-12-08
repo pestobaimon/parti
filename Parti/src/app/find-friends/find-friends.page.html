@@ -1,8 +1,15 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Find Friends</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title class='ion-text-center'>
+      Find Friends
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="goToProfilePage()"><ion-icon slot="start" name="arrow-back"></ion-icon> Back</ion-button>
+    </ion-buttons>
+    <div slot='end'class="div-comp"></div>
   </ion-toolbar>
 </ion-header>
+
 <ion-content class="ion-padding">
   <div class= "ion-padding">
       <ion-list class="background-input">
@@ -30,5 +37,4 @@
       </ion-item>
     </ion-card>
   </div>
-  <ion-button (click)="goToProfilePage()">Back</ion-button>
 </ion-content>

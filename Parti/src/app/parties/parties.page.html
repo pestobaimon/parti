@@ -10,37 +10,94 @@
   <h2 *ngIf="user">
     Welcome {{user.displayName}}
   </h2>
+  
   <ion-button *ngIf="afAuth.auth.currentUser" (click)="signOut()">Sign Out</ion-button> 
-  <ion-button *ngIf="afAuth.auth.currentUser" (click)="getUser()">Get user data</ion-button> 
-  <div>
-    <ion-card *ngFor="let party of parties">
-        <ion-card-header>
-            <ion-card-subtitle>{{party.partyType}} Party</ion-card-subtitle>
-            <ion-card-title>{{party.partyName}}</ion-card-title>
+  <ion-button *ngIf="afAuth.auth.currentUser" (click)="getUser()">Get user data</ion-button>
+   
+  <div *ngIf="pendingParties.length">
+    <ion-label style="font-size: 25px" class="ion-text-center">pending parties</ion-label>
+    <ion-card *ngFor="let party of pendingParties" class="parti-card">
+        <ion-card-header color='primary' (click)="expandToggle(party,'card')">
+            <ion-card-subtitle>{{party.partyType}} parti</ion-card-subtitle>
+            <ion-icon *ngIf="!party.expanded" name="arrow-down" style="float:right; font-size: 20px;"></ion-icon>
+            <ion-icon *ngIf="party.expanded" name="arrow-up" style="float:right; font-size: 20px;"></ion-icon>
+            <ion-card-title>{{party.partyName}}</ion-card-title>      
         </ion-card-header>
-        <ion-item>
-          <h6 slot="start">Leader</h6>
-          <ion-label><p>{{party.partyLeader.displayName}}</p></ion-label>
-        </ion-item>
-        <ion-item>
-            <ion-icon name="pin" slot="start"></ion-icon>
-            <ion-label><p>{{party.place}}</p></ion-label>
-            <ion-button fill="outline" slot="end">Maps</ion-button>
-        </ion-item>
-        <ion-item>
-            <ion-icon name="clock" slot="start"></ion-icon>
-            <ion-label><p>{{party.time}}</p></ion-label>
-        </ion-item>
-        <ion-item>
-            <h6 slot="start">minMem</h6>
-            <ion-label><p>{{party.memberCount}}/{{party.minMembers}}</p></ion-label>
-        </ion-item>
-        <ion-item>
-            <h6 slot="start">maxMem</h6>
-            <ion-label><p>{{party.memberCount}}/{{party.maxMembers}}</p></ion-label>
-        </ion-item>
+        <app-expandable [expandHeight]='itemExpandHeight' [expanded]='party.expanded'>
+            <div>
+                <ion-list lines="none">
+                  <ion-item>
+                    <ion-label slot="start">Leader</ion-label>
+                    <ion-label>{{party.partyLeader.displayName}}</ion-label>
+                  </ion-item>
+                  <ion-item class="item-tint">
+                      <ion-icon name="pin" slot="start"></ion-icon>
+                      <ion-label>{{party.place}}</ion-label>
+                      <ion-button fill="outline" slot="end" color='primary'>Maps</ion-button>
+                  </ion-item>
+                  <ion-item>
+                      <ion-icon name="clock" slot="start"></ion-icon>
+                      <ion-label>{{convertTimeStamp(party.time)}}</ion-label>
+                  </ion-item>
+                  <ion-item class="item-tint" (click)="expandToggle(party,'member')">
+                      <ion-label slot="start">Members</ion-label>
+                      <ion-label>{{party.memberCount}}</ion-label>
+                      <ion-button fill="outline" slot="end" color='primary' (click)="showMembers(party.members)">view</ion-button>
+                  </ion-item>
+                  <ion-item>
+                      <ion-label slot="start">Max Members</ion-label>
+                      <ion-label>{{party.memberCount}} out of {{party.maxMembers}}</ion-label>
+                  </ion-item>
+                  <ion-button expand="block" class="button-color" (click)="joinParty(party)" style="font-size:15px;">join parti</ion-button>
+                
+                </ion-list>
+              </div>
+        </app-expandable>
     </ion-card>
   </div>
+  <div *ngIf="parties">
+      <h4 class="ion-text-center">Ongoing parties</h4>
+      <ion-card *ngFor="let party of parties" class="parti-card">
+          <ion-card-header color='primary' (click)="expandToggle(party,'card')">
+              <ion-card-subtitle>{{party.partyType}} parti</ion-card-subtitle>
+              <ion-icon *ngIf="!party.expanded" name="arrow-down" style="float:right; font-size: 20px;"></ion-icon>
+              <ion-icon *ngIf="party.expanded" name="arrow-up" style="float:right; font-size: 20px;"></ion-icon>
+              <ion-card-title>{{party.partyName}}</ion-card-title>      
+          </ion-card-header>
+          <app-expandable [expandHeight]='itemExpandHeight' [expanded]='party.expanded'>
+              <div>
+                  <ion-list lines="none">
+                    <ion-item>
+                      <ion-label slot="start">Leader</ion-label>
+                      <ion-label>{{party.partyLeader.displayName}}</ion-label>
+                    </ion-item>
+                    <ion-item class="item-tint">
+                        <ion-icon name="pin" slot="start"></ion-icon>
+                        <ion-label>{{party.place}}</ion-label>
+                        <ion-button fill="outline" slot="end" color='primary'>Maps</ion-button>
+                    </ion-item>
+                    <ion-item>
+                        <ion-icon name="clock" slot="start"></ion-icon>
+                        <ion-label>{{convertTimeStamp(party.time)}}</ion-label>
+                    </ion-item>
+                    <ion-item class="item-tint" (click)="expandToggle(party,'member')">
+                        <ion-label slot="start">Members</ion-label>
+                        <ion-label>{{party.memberCount}}</ion-label>
+                        <ion-button fill="outline" slot="end" color='primary' (click)="showMembers(party.members)">view</ion-button>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label slot="start">Max Members</ion-label>
+                        <ion-label>{{party.memberCount}} out of {{party.maxMembers}}</ion-label>
+                    </ion-item>
+                    <ion-button expand="block" class="button-color" (click)="leaveParty(party)" style="font-size:15px;">leave parti</ion-button>
+                  
+                  </ion-list>
+                </div>
+          </app-expandable>
+      </ion-card>
+  </div>
+  <h5 class="ion-text-center" *ngIf="!pendingParties.length">No pending parties</h5>
+  <h5 class="ion-text-center" *ngIf="!parties.length">No ongoing parties</h5>
 </ion-content>
 <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="goToPage('/create-party')">

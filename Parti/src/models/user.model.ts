@@ -20,10 +20,15 @@ export interface parties {
     partyType: string;
     partyLeader: partiUser;
     minMembers: number;
-    maxMembers?: number;
+    maxMembers: any;
     memberCount:number;
-    groups?: Array<DocumentReference>;
-    friends?: Array<DocumentReference>;
+    pendingMemberCount:number;
+    groupNames?: Array<string>;
+    groupIds?:Array<string>;
+    pendingMembers: Array<any>;
+    pendingMemberIds:Array<string>;
+    members: Array<any>;
+    memberIds:Array<any>;
     time: Date;
     exptime: Date;
     place: string;
