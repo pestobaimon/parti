@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
+    <ion-title class="ion-text-center">
       Parties
     </ion-title>
   </ion-toolbar>
@@ -55,7 +55,7 @@
         </app-expandable>
     </ion-card>
   </div>
-  <div *ngIf="parties">
+  <div *ngIf="parties.length">
       <h4 class="ion-text-center">Ongoing parties</h4>
       <ion-card *ngFor="let party of parties" class="parti-card">
           <ion-card-header color='primary' (click)="expandToggle(party,'card')">

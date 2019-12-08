@@ -1,16 +1,21 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
+    <ion-title class='ion-text-center'>
       Profile
     </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
   <div>
-    <ion-label *ngIf="user" style="font-size: 25px">{{user.displayName}}</ion-label>
-    <ion-button (click)="goToChangeDisplayName()">change name</ion-button>
+    <img src="assets/img/jisoo.jpg" style="width: 160px;height: 240;" alt="your image">
+    <ion-item lines="none">
+        <div *ngIf="user" >Display name: {{user.displayName}}</div>
+        <ion-button (click)="goToChangeDisplayName()" slot='end'>change</ion-button>
+    </ion-item>
+    <ion-item lines="none">
+        <div *ngIf="user" >Email: {{user.email}}</div>
+    </ion-item>
   </div>
-  <img src="assets/img/jisoo.jpg" style="width: 160px;height: 240;" alt="your image">
   
   <div>
     <h4 class="ion-text-center">friends </h4> 
