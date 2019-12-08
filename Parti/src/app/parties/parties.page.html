@@ -10,9 +10,6 @@
   <h2 *ngIf="user">
     Welcome {{user.displayName}}
   </h2>
-  
-  <ion-button *ngIf="afAuth.auth.currentUser" (click)="signOut()">Sign Out</ion-button> 
-  <ion-button *ngIf="afAuth.auth.currentUser" (click)="getUser()">Get user data</ion-button>
    
   <div *ngIf="pendingParties.length">
     <ion-label style="font-size: 25px" class="ion-text-center">pending parties</ion-label>
