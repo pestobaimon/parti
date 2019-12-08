@@ -34,7 +34,7 @@ export class AuthService {
                     }else{
                         const data : partiUser = {
                             uid: user.uid,
-                            email: user.email,
+                            email: user.email.toLowerCase(),
                             displayName: user.displayName,
                             friends: [],
                         };

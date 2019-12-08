@@ -1,23 +1,24 @@
 <ion-header>
-  <ion-toolbar>
-    <div padding>
-    <ion-title class="ion-text-center"><h3>Choose your display name<br>and you're good to go!</h3></ion-title>
-    </div>
-  </ion-toolbar>
-</ion-header>
+    <ion-toolbar color="primary">
+      <ion-title class='ion-text-center'>
+        Change display name
+      </ion-title>
+      <ion-buttons slot="start">
+        <ion-button (click)="goToProfilePage()"><ion-icon slot="start" name="arrow-back"></ion-icon> Back</ion-button>
+      </ion-buttons>
+      <div slot='end'class="div-comp"></div>
+    </ion-toolbar>
+  </ion-header>
 
 <ion-content>
   <div class="ion-padding">
-    <ion-list class="background-input">
+    <ion-list class="line-input">
       <ion-item>
         <ion-input type="text" class="ion-text-left" placeholder="Display name" [(ngModel)]="displayName"></ion-input>
       </ion-item>
       <div class="ion-padding">
         <div class="ion-text-center">
           <ion-button (click)="setDisplayName(displayName)">Let's Parti!</ion-button>
-        </div>
-        <div class = "ion-text-center">
-          <ion-button (click)="goToProfilePage()">Back</ion-button>
         </div>
       </div>
     </ion-list>

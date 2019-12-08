@@ -30,9 +30,10 @@ export class FindFriendsPage implements OnInit {
   friendList: Array<any>;
   email:string;
   
-  findUser(email:string){
+  findUser(emailIn:string){
+    const email = emailIn.toLowerCase();
     this.authService.user$.subscribe( currUser =>{
-      if(currUser.email == email){
+      if(currUser.email.toLowerCase() == email){
         console.log("That's your email!");
         this.alertService.inputAlert("That's your email!");
       }else if(!email){

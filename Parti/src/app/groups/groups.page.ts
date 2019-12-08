@@ -23,8 +23,13 @@ export class GroupsPage {
     private authService : AuthService,
     private router: Router,
     private events: Events
-  ) {
-
+  ){
+    this.groupService.groups$.subscribe(data=>{
+      this.groups = data;
+    });
+    this.authService.user$.subscribe(userData=>{
+      this.user = userData;
+    });
   }
   groupName:string;
   members:Array<string>;
@@ -32,27 +37,8 @@ export class GroupsPage {
   user:partiUser;
   createGroup(groupName: string,members: Array<any>){
     this.groupService.createGroup(groupName,members);
-    this.queryGroup();
-  }
-  queryGroup(){
-    this.afs.collection('groups').ref
-    .where('memberIds','array-contains',this.afAuth.auth.currentUser.uid)
-    .get()
-    .then(snapshot=>{
-      this.groups = [];
-      snapshot.forEach(doc=>{
-        this.groups.push(doc.data());
-      });
-    });
   }
   ngOnInit(){
-    this.authService.user$.subscribe(userData=>{
-      this.user = userData;
-    });
-    this.queryGroup();
-    this.events.subscribe('group:edited',()=>{
-      this.queryGroup();
-    });
   }
   goToCreateGroup(){
     this.router.navigate(['create-group']);
