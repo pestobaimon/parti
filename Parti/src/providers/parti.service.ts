@@ -57,12 +57,26 @@ export class partiService{
         newMemberIds = parti.memberIds;
         newMembers.push(currUser);
         newMemberIds.push(this.uid);
-        this.afs.collection('parties').doc(parti.partyId).update({
+        const updatedParty: parties = {
+            partyId: parti.partyId,
+            partyName: parti.partyName,
+            partyType: parti.partyType,
+            partyLeader: parti.partyLeader,
+            minMembers: parti.minMembers,
+            maxMembers: parti.maxMembers,
+            memberCount: parti.memberCount + 1,
+            pendingMemberCount: parti.pendingMemberCount - 1,
+            groupNames: parti.groupNames,
+            groupIds: parti.groupIds,
+            time: parti.time,
+            exptime: parti.exptime,
+            place: parti.place,
             members: newMembers,
             memberIds: newMemberIds,
             pendingMembers: newPending,
             pendingMemberIds: newPendingUid
-        }).then(()=>{
+        }
+        this.afs.collection('parties').doc(parti.partyId).update(updatedParty).then(()=>{
             console.log('joined');
         });
     }
