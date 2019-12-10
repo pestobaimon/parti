@@ -7,6 +7,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';
 import { AlertService } from '../../providers/alert.service';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-edit-group',
@@ -69,13 +70,11 @@ export class EditGroupPage implements OnInit {
     this.groupService.addMembers(this.groupId,membersToAdd);
   }
   removeMember(memberUidToRemove:string){
-    let newMembers: Array<any> = [];
-    let newMemberIds: Array<any> =[];
-    this.group.members.forEach(member=>{
-      if(member.uid != memberUidToRemove){
-        newMembers.push(member);
-        newMemberIds.push(member.uid);
-      }
+    let newMembers = $.grep(this.group.members, function(member){ 
+      return member.uid != memberUidToRemove; 
+    });
+    let newMemberIds = $.grep(this.group.memberIds, function(uid){
+      return uid != memberUidToRemove;
     });
     this.groupService.updateMembers(this.groupId,newMembers,newMemberIds);
   }
@@ -95,6 +94,7 @@ export class EditGroupPage implements OnInit {
     this.alertService.leaveGroupAlert();
     this.events.subscribe('user:leaveGroup',()=>{
       this.removeMember(this.user.uid);
+      console.log(this.user.uid,'left');
       this.back();
     });
   }
