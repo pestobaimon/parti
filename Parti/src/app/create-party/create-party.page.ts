@@ -183,7 +183,8 @@ export class CreatePartyPage implements OnInit {
                 memberCount: 1,
                 pendingMemberCount: friends.length,
                 members: [currUser],
-                memberIds: [currUser.uid]
+                memberIds: [currUser.uid],
+                isFull:false,
             } 
 
             console.log("success!");

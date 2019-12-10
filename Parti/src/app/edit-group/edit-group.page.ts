@@ -69,31 +69,19 @@ export class EditGroupPage implements OnInit {
     console.log(membersToAdd);
     this.groupService.addMembers(this.groupId,membersToAdd);
   }
-  removeMember(memberUidToRemove:string){
-    let newMembers = $.grep(this.group.members, function(member){ 
-      return member.uid != memberUidToRemove; 
-    });
-    let newMemberIds = $.grep(this.group.memberIds, function(uid){
-      return uid != memberUidToRemove;
-    });
-    this.groupService.updateMembers(this.groupId,newMembers,newMemberIds);
-  }
   confirmRemove(memberUidToRemove:string,memberName:string){
     this.alertService.removeMemberAlert(memberName);
     this.events.subscribe('user:removeMember',()=>{
-      this.removeMember(memberUidToRemove);
+      this.groupService.removeMember(memberUidToRemove,this.group);
     });
   }
   back(){
-    this.router.navigate(['tabs/groups'])
-      .then(() => {
-        this.events.publish('group:edited');
-    });
+    this.router.navigate(['tabs/groups']);
   }
   leaveGroup(){
     this.alertService.leaveGroupAlert();
     this.events.subscribe('user:leaveGroup',()=>{
-      this.removeMember(this.user.uid);
+      this.groupService.removeMember(this.user.uid,this.group);
       console.log(this.user.uid,'left');
       this.back();
     });

@@ -70,4 +70,13 @@ export class GroupService{
         this.groupToEdit = groupId;
         this.router.navigate(['edit-group']);
     }
+    removeMember(memberUidToRemove:string,group:partiGroup){
+        let newMembers = $.grep(group.members, function(member){ 
+          return member.uid != memberUidToRemove; 
+        });
+        let newMemberIds = $.grep(group.memberIds, function(uid){
+          return uid != memberUidToRemove;
+        });
+        this.updateMembers(group.groupId,newMembers,newMemberIds);
+      }
 }
