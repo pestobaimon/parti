@@ -57,6 +57,10 @@ const routes: Routes = [
   {
     path: 'edit-group',
     loadChildren: () => import('./edit-group/edit-group.module').then( m => m.EditGroupPageModule)
+  },
+  {
+    path: 'parti-detail',
+    loadChildren: () => import('./parti-detail/parti-detail.module').then( m => m.PartiDetailPageModule)
   }
 ];
 @NgModule({
