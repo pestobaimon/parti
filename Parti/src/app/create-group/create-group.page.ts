@@ -6,7 +6,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { GroupService } from '../../providers/group.service';
 import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';
-
+import { AlertService } from '../../providers/alert.service';
 @Component({
   selector: 'app-create-group',
   templateUrl: './create-group.page.html',
@@ -23,7 +23,8 @@ export class CreateGroupPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private groupService : GroupService,
-    private events: Events
+    private events: Events,
+    private alertService : AlertService
   ) {}
   ngOnInit() {
     this.authService.user$.subscribe(data=>{
@@ -37,13 +38,14 @@ export class CreateGroupPage implements OnInit {
   }
   
   createGroup(groupName: string){
+    if(groupName){
     this.groupMembers = []
     let currUser = {
       displayName : this.user.displayName,
       email: this.user.email,
       uid: this.user.uid
     }
-    this.groupMembers.push(currUser);
+    this.groupMembers.push(currUser); /**append member */
 
     this.friendArray.forEach(friend=>{
       if(this.form.get(friend.uid).value){
@@ -51,6 +53,9 @@ export class CreateGroupPage implements OnInit {
       }
     });
     this.groupService.createGroup(groupName,this.groupMembers);
+    }else{
+      this.alertService.inputAlert("Please enter group name");
+    }
   }
   goToGroupsPage(){
     this.router.navigate(['tabs/groups']).then(()=>{

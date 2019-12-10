@@ -21,6 +21,10 @@ export class PartiesPage {
     private router: Router,
     private partiService: partiService
     ) {
+      this.authService.user$.subscribe(currUser => { /**currUser is emitted data */
+        this.user = currUser;
+        console.log(currUser);
+      });
       this.partiService.parties$.subscribe(data=>{
         data.forEach(party=>{
           party["expanded"]=false;
@@ -41,9 +45,6 @@ export class PartiesPage {
   itemExpandHeight: number = 200;
 
   ngOnInit(){
-    this.authService.user$.subscribe(currUser => {
-      this.user = currUser;
-    });
   }
   goToPage(page:string){
     this.router.navigate([page]);

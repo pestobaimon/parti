@@ -8,27 +8,25 @@ import { AlertService } from './alert.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-    constructor(
+    constructor( /**run everytime when create new instant(one instant per user) */
         private afAuth : AngularFireAuth,
-        private afs: AngularFirestore,        
+        private afs: AngularFirestore,   /**read write database */     
         private alertService: AlertService
 
     ){
-        this.user$ = this.afAuth.authState.pipe(
-            switchMap(user => {
+        this.user$ = this.afAuth.authState.pipe(    
+            switchMap(user => { /**run newest data */
                 if (user){
-                    return this.afs.doc<partiUser>(`users/${user.uid}`).valueChanges();
-                }else{
+                    return this.afs.doc<partiUser>(`users/${user.uid}`).valueChanges(); /**ja emit when valuechange, return observable of document with document id as logged in uid */
+                }else{ /**aow other data tee pen obseravable kong uid nee ma display */
                     return of(null);
                 }
             })
         );
-        this.afAuth.authState.pipe(take(1)).subscribe(user =>{
-            if(user){
-                const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-                    `users/${user.uid}`
-                );
-                userRef.ref.get().then(value => {
+        this.afAuth.authState.pipe(take(1)).subscribe(user =>{ /**pen new user or not */
+            if(user){ 
+                const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+                userRef.ref.get().then(value => { /**get=aow data at that time, then=promise wa ja tum arai */
                     if(value.exists){
                         console.log('user already exists, no data added');
                     }else{
@@ -48,7 +46,7 @@ export class AuthService {
     }
     authState = new BehaviorSubject(false);
     
-    user$: Observable<partiUser>;
+    user$: Observable<partiUser>; /**variable type is obs emit partiUser type */
     public setUserData(user: partiUser) {
         return this.afs.doc<partiUser>(`users/${user.uid}`).set(user);
       }
