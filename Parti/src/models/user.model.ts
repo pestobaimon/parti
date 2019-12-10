@@ -32,4 +32,5 @@ export interface parties {
     time: Date;
     exptime: Date;
     place: string;
+    isFull:boolean;
 }

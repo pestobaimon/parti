@@ -38,46 +38,57 @@ export class partiService{
     }
 
     joinParti(parti:parties){
-        var newPending = [];
-        var newPendingUid = [];
-        var newMembers = [];
-        var newMemberIds = [];
-        parti.pendingMembers.forEach(member=>{
-            if(member.uid!=this.uid){
-                newPending.push(member);
-                newPendingUid.push(member.uid);
+        if (!parti.isFull){
+            let isFull : boolean;
+            if(parti.memberCount+1 == parti.maxMembers){
+                isFull =true;
+            }else{
+                isFull = false;
             }
-        });
-        const currUser = {
-            displayName : this.user.displayName,
-            email: this.user.email,
-            uid: this.user.uid
+            var newPending = [];
+            var newPendingUid = [];
+            var newMembers = [];
+            var newMemberIds = [];
+            parti.pendingMembers.forEach(member=>{
+                if(member.uid!=this.uid){
+                    newPending.push(member);
+                    newPendingUid.push(member.uid);
+                }
+            });
+            const currUser = {
+                displayName : this.user.displayName,
+                email: this.user.email,
+                uid: this.user.uid
+            }
+            newMembers = parti.members;
+            newMemberIds = parti.memberIds;
+            newMembers.push(currUser);
+            newMemberIds.push(this.uid);
+            const updatedParty: parties = {
+                partyId: parti.partyId,
+                partyName: parti.partyName,
+                partyType: parti.partyType,
+                partyLeader: parti.partyLeader,
+                minMembers: parti.minMembers,
+                maxMembers: parti.maxMembers,
+                memberCount: parti.memberCount + 1,
+                pendingMemberCount: parti.pendingMemberCount - 1,
+                groupNames: parti.groupNames,
+                groupIds: parti.groupIds,
+                time: parti.time,
+                exptime: parti.exptime,
+                place: parti.place,
+                members: newMembers,
+                memberIds: newMemberIds,
+                pendingMembers: newPending,
+                pendingMemberIds: newPendingUid,
+                isFull: isFull,
+            }
+            this.afs.collection('parties').doc(parti.partyId).update(updatedParty).then(()=>{
+                console.log('joined');
+            });
+        }else{
+            this.alertService.inputAlert('Parti Full!');
         }
-        newMembers = parti.members;
-        newMemberIds = parti.memberIds;
-        newMembers.push(currUser);
-        newMemberIds.push(this.uid);
-        const updatedParty: parties = {
-            partyId: parti.partyId,
-            partyName: parti.partyName,
-            partyType: parti.partyType,
-            partyLeader: parti.partyLeader,
-            minMembers: parti.minMembers,
-            maxMembers: parti.maxMembers,
-            memberCount: parti.memberCount + 1,
-            pendingMemberCount: parti.pendingMemberCount - 1,
-            groupNames: parti.groupNames,
-            groupIds: parti.groupIds,
-            time: parti.time,
-            exptime: parti.exptime,
-            place: parti.place,
-            members: newMembers,
-            memberIds: newMemberIds,
-            pendingMembers: newPending,
-            pendingMemberIds: newPendingUid
-        }
-        this.afs.collection('parties').doc(parti.partyId).update(updatedParty).then(()=>{
-            console.log('joined');
-        });
     }
 }
