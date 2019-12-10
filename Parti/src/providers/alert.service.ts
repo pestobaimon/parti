@@ -51,7 +51,7 @@ export class AlertService{
         {
           text: 'OK',
           handler: data => {
-            this.events.publish('user:removeMember');
+            this.events.publish('user:leaveGroup');
           }
         }
       ]

@@ -55,7 +55,7 @@ export class GroupService{
             memberIds: firebase.firestore.FieldValue.arrayUnion(...memberIdArray)
         });
     }
-    updateMembers(groupId:string,newMembers:Array<any>,newMemberIds:Array<string>){
+    updateMembers(groupId:string,newMembers:Array<partiGroup>,newMemberIds:Array<string>){
         this.afs.collection('groups').doc(groupId).update({members:newMembers});
         this.afs.collection('groups').doc(groupId).update({memberIds:newMemberIds});
     }
