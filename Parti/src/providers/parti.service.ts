@@ -5,14 +5,16 @@ import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from './alert.service';
 import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 
 @Injectable({providedIn:'root'})
-export class partiService{
+export class PartiService{
     constructor(
         private afs:AngularFirestore,
         private afAuth: AngularFireAuth,
         private alertService: AlertService,
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ){
         
         this.pendingParties$ = this.pendingCollection.valueChanges();
@@ -26,7 +28,8 @@ export class partiService{
     private uid = this.afAuth.auth.currentUser.uid;
     private pendingCollection = this.afs.collection('parties',ref => ref.where('pendingMemberIds','array-contains',this.uid));
     private acceptedCollection = this.afs.collection('parties',ref=> ref.where('memberIds','array-contains',this.uid))
-
+    public partiIDtoshow:string;
+    
     public pendingParties$:Observable<any[]>;
     public parties$:Observable<any[]>;
     createParty(parti:parties){
@@ -90,5 +93,9 @@ export class partiService{
         }else{
             this.alertService.inputAlert('Parti Full!');
         }
+    }
+    partiDetail(partiID:string){
+        this.partiIDtoshow = partiID;
+        this.router.navigate(["parti-detail"]);
     }
 }
