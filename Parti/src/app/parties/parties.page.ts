@@ -55,7 +55,7 @@ export class PartiesPage {
   convertTimeStamp(timestamp:any){
     const time = Number(timestamp.seconds);
     return moment.unix(time).format('DD/MM/YYYY');
-  }
+  } 
 
   expandToggle(obj:any,type:string){
     if(type=="card"){
@@ -68,7 +68,7 @@ export class PartiesPage {
     }
   }
   joinParty(party:parties){
-    this.partiService.joinParti(party);
+    this.partiService.joinParti(party); //h
   }
   showMembers(obj:any){
 
