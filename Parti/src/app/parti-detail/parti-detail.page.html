@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title *ngIf="partiToView">{{partiToView.partyName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf = "partiToView" class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <strong>Party Type: </strong>{{partiToView.partyType}}
+    </ion-item>
+    <ion-item>
+        <strong>Party Leader: </strong>{{partiToView.partyLeader.displayName}}
+    </ion-item>
+    <ion-item>
+        <strong>Location: </strong>{{partiToView.place}}
+    </ion-item>
+    <ion-item>
+        <strong>Time: </strong>{{convertTimeStamp(partiToView.time)}}
+    </ion-item>
+    <ion-list lines="none">
+      <ion-item>
+        <strong>Members:</strong>
+      </ion-item>
+      <ion-item *ngFor="let member of members">
+        {{member.displayName}}
+      </ion-item>
+    </ion-list>
+    <ion-list lines="none">
+      <ion-item>
+        <strong> Pending Member: </strong>
+      </ion-item>
+      <ion-item *ngFor="let pendingMember of pending">
+        {{pendingMember.displayName}}
+      </ion-item>
+    </ion-list>
+    <ion-item>
+        <strong>Maximum member: </strong>{{partiToView.maxMembers}}
+    </ion-item>
+    <ion-item>
+        <strong>Minimum member: </strong>{{partiToView.minMembers}}
+    </ion-item>
+  </ion-list>
+</ion-content>

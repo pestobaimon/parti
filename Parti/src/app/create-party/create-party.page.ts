@@ -9,7 +9,7 @@ import { GroupService } from '../../providers/group.service';
 import * as moment from 'moment';
 import { AlertService } from '../../providers/alert.service';
 import { Events } from '@ionic/angular';
-import { partiService } from '../../providers/parti.service';
+import { PartiService } from '../../providers/parti.service';
 
 @Component({
   selector: 'app-create-party',
@@ -40,7 +40,7 @@ export class CreatePartyPage implements OnInit {
         private authService: AuthService,
         private groupService: GroupService,
         private events: Events,
-        private partiService:partiService,
+        private partiService:PartiService,
         private afAuth:AngularFireAuth
         ) {
             console.log(this.today);

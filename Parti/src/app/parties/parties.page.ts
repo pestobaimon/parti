@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
 import { partiUser, partiGroup, parties } from '../../models/user.model'
-import { partiService } from '../../providers/parti.service';
+import { PartiService } from '../../providers/parti.service';
 import * as moment from 'moment';
 
 @Component({
@@ -19,12 +19,12 @@ export class PartiesPage {
     private afAuth: AngularFireAuth,
     private authService: AuthService,
     private router: Router,
-    private partiService: partiService
+    private partiService: PartiService
     ) {
       this.authService.user$.subscribe(currUser => { /**currUser is emitted data */
         this.user = currUser;
         console.log(currUser);
-      });
+      }); /**always update change in current user */
       this.partiService.parties$.subscribe(data=>{
         data.forEach(party=>{
           party["expanded"]=false;
@@ -55,7 +55,7 @@ export class PartiesPage {
   convertTimeStamp(timestamp:any){
     const time = Number(timestamp.seconds);
     return moment.unix(time).format('DD/MM/YYYY');
-  }
+  } 
 
   expandToggle(obj:any,type:string){
     if(type=="card"){
@@ -68,7 +68,7 @@ export class PartiesPage {
     }
   }
   joinParty(party:parties){
-    this.partiService.joinParti(party);
+    this.partiService.joinParti(party); //h
   }
   leaveParty(party:parties){
     let memberToRemove = {
@@ -78,5 +78,7 @@ export class PartiesPage {
     }
     this.partiService.removeMember(memberToRemove,party);
   }
-
+  partiDetail(partiID:string){
+    this.partiService.partiDetail(partiID);
+  }
 }
