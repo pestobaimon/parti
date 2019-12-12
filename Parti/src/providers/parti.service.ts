@@ -133,6 +133,7 @@ export class PartiService{
         this.afs.collection('parties').doc(parti.partyId).update(updatedParty).then(()=>{
             console.log('removed member: ',memberToRemove.uid);
         });
+    }
 
     partiDetail(partiID:string){
         this.partiIDtoshow = partiID;
