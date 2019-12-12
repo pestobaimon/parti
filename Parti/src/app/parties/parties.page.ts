@@ -70,8 +70,13 @@ export class PartiesPage {
   joinParty(party:parties){
     this.partiService.joinParti(party);
   }
-  showMembers(obj:any){
-
+  leaveParty(party:parties){
+    let memberToRemove = {
+      uid: this.user.uid,
+      displayName: this.user.displayName,
+      email: this.user.email
+    }
+    this.partiService.removeMember(memberToRemove,party);
   }
 
 }

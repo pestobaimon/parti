@@ -34,7 +34,7 @@ export class AlertService{
       });
       await alert.present();
       let result = await alert.onDidDismiss();
-      console.log(result)
+      console.log(result);
   }
   async leaveGroupAlert(){
     const alert = await this.alertController.create({
@@ -126,6 +126,7 @@ export class AlertService{
         {
           text: 'OK',
           handler: data => {
+            this.presentLoading();
             this.events.publish('parti:start');
           }
         }

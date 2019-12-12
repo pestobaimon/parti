@@ -14,7 +14,11 @@ import { FirebaseUIModule, firebase, firebaseui } from 'firebaseui-angular';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+
 import {environment} from 'src/environments/environment';
+
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
 
@@ -41,9 +45,11 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AngularFireModule.initializeApp(environment.firebasecfg),
     AngularFireAuthModule,
     FirebaseUIModule.forRoot(firebaseUiAuthConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireStorageModule
   ],
   providers: [
+    Camera,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

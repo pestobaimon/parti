@@ -30,11 +30,13 @@ export class AuthService {
                     if(value.exists){
                         console.log('user already exists, no data added');
                     }else{
+                        const defaultPic = "https://firebasestorage.googleapis.com/v0/b/parti-app.appspot.com/o/user_profile_pictures%2F1551696c66b26f200c3ba94641316780.jpg?alt=media&token=8e50d0c7-7f57-4fa6-a5ae-87c0e1582d1b";
                         const data : partiUser = {
                             uid: user.uid,
                             email: user.email.toLowerCase(),
                             displayName: user.displayName,
                             friends: [],
+                            profilePic: defaultPic
                         };
                         this.setUserData(data).catch(error =>{
                             console.log(error);

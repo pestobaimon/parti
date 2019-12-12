@@ -7,7 +7,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';
 import { AlertService } from '../../providers/alert.service';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-edit-group',

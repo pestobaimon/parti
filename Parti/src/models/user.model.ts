@@ -6,6 +6,7 @@ export interface partiUser {
     email: string;
     friends?: any [];
     friendIds?: string [];
+    profilePic?:string;
 }
 export interface partiGroup {
     groupName: string;  

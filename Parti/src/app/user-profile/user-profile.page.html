@@ -12,7 +12,11 @@
 <ion-content class="ion-padding">
 
   <div>
-    <img src="assets/img/jisoo.jpg" style="width: 160px;height: 240;" alt="your image">
+    <div>
+      <img [src]="user?.profilePic" style="width: 160px;height: 240;" alt="your image">
+      
+    </div>
+    <ion-button (click)="changeProfilePic()">change pic</ion-button>
     <ion-item lines="none">
         <div *ngIf="user" >Display name: {{user.displayName}}</div>
         <ion-button (click)="goToChangeDisplayName()" slot='end'>change</ion-button>
