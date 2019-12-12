@@ -12,7 +12,7 @@
   </h2>
    
   <div *ngIf="pendingParties.length">
-    <ion-label style="font-size: 25px" class="ion-text-center">pending parties</ion-label>
+    <h4 class="ion-text-center">Pending parties</h4>
     <ion-card *ngFor="let party of pendingParties" class="parti-card">
         <ion-card-header color='primary' (click)="expandToggle(party,'card')">
             <ion-card-subtitle>{{party.partyType}} parti</ion-card-subtitle>
@@ -100,8 +100,8 @@
           </app-expandable>
       </ion-card>
   </div>
-  <h5 class="ion-text-center" *ngIf="!pendingParties.length">No pending parties</h5>
-  <h5 class="ion-text-center" *ngIf="!parties.length">No ongoing parties</h5>
+  <h4 class="ion-text-center" *ngIf="!pendingParties.length">No pending parties</h4>
+  <h4 class="ion-text-center" *ngIf="!parties.length">No ongoing parties</h4>
 </ion-content>
 <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="goToPage('/create-party')">

@@ -6,6 +6,7 @@ import { partiGroup, partiUser } from '../models/user.model';
 import { Observable } from 'rxjs';
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
+import * as $ from 'jquery';
 
 @Injectable({providedIn:'root'})
 export class GroupService{

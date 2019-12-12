@@ -124,7 +124,7 @@ export class CreatePartyPage implements OnInit {
         const minMembers = this.partiForm.get('minMembers').value;
         const maxMembers = this.partiForm.get('maxMembers').value;
         const groups:Array<partiGroup> = this.partiForm.get('groups').value;
-        let friends:Array<any> = this.partiForm.get('friends').value;
+        let pendingMembers:Array<any> = this.partiForm.get('friends').value;
         const startDate = new Date(this.partiForm.get('partiStart').value);
         const hoursBeforeStartToExp = this.partiForm.get('partiExpire').value;
         const expdate = new Date(this.partiForm.get('partiStart').value);
@@ -133,8 +133,8 @@ export class CreatePartyPage implements OnInit {
         this.submitAttempt = true;
 
         if(!this.minMoreThanMax && this.partiForm.valid){
-            if(!friends){
-                friends=[];
+            if(!pendingMembers){
+                pendingMembers=[];
             }
 
             let groupNames:Array<string> = [];
@@ -146,17 +146,17 @@ export class CreatePartyPage implements OnInit {
                     groupIds.push(group.groupId);
                     group.members.forEach(member=>{
                         if(member.uid != this.uid){
-                            friends.push(member);
+                            pendingMembers.push(member);
                         }
-                    });
+                    });                    
                 });
             }
 
-            friends = friends.filter((obj, index, self) => self.findIndex(t => t.uid === obj.uid) === index);
+            pendingMembers = pendingMembers.filter((obj, index, self) => self.findIndex(t => t.uid === obj.uid) === index); //remove duplicate friends
             
             let friendIds:Array<string> = [];
 
-            friends.forEach(friend=>{
+            pendingMembers.forEach(friend=>{
                 friendIds.push(friend.uid);
             })
 
@@ -175,19 +175,17 @@ export class CreatePartyPage implements OnInit {
                 maxMembers: maxMembers,
                 groupNames: groupNames,
                 groupIds: groupIds,
-                pendingMembers:friends,
+                pendingMembers:pendingMembers,
                 pendingMemberIds: friendIds,
                 time: startDate,
                 exptime: expdate,
                 place: location,
                 memberCount: 1,
-                pendingMemberCount: friends.length,
+                pendingMemberCount: pendingMembers.length,
                 members: [currUser],
                 memberIds: [currUser.uid],
                 isFull:false,
-            } 
-
-            console.log("success!");
+            }             
             this.startParti(partiCreated);
             
         }else{

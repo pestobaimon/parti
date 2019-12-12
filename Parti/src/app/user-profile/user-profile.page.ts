@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from '../../providers/alert.service';
 import { Events } from '@ionic/angular';
+import { PhotoService } from '../../providers/photo.service';
 
 
 @Component({
@@ -20,14 +21,16 @@ export class UserProfilePage {
     private router : Router,
     private afAuth : AngularFireAuth,
     private alertService: AlertService,
-    private events: Events
-  ) { }
-
-  ngOnInit() {
+    private events: Events,
+    private photoService: PhotoService
+  ) {
     this.authService.user$.subscribe(currUser => {
       this.user = currUser;
       this.friends = this.user.friends;
     });
+  }
+
+  ngOnInit() {
   }
 
   goToFindFriendsPage(){
@@ -43,5 +46,8 @@ export class UserProfilePage {
         location.reload();
       });
     });
+  }
+  changeProfilePic(){
+    this.photoService.getFromGallery();
   }
 }

@@ -5,7 +5,11 @@ import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from './alert.service';
 import { AuthService } from './auth.service';
+
+import * as $ from 'jquery';
+
 import { Router } from '@angular/router';
+
 
 @Injectable({providedIn:'root'})
 export class PartiService{
@@ -35,8 +39,8 @@ export class PartiService{
     createParty(parti:parties){
         this.afs.collection('parties').add(parti).then(data=>{
             data.update({partyId : data.id});
+            this.alertService.dismissLoader();
             this.alertService.inputAlert('Parti Created!');
-            console.log('parti created!');
         });
     }
 
@@ -94,8 +98,45 @@ export class PartiService{
             this.alertService.inputAlert('Parti Full!');
         }
     }
+
+    removeMember(memberToRemove:any,parti:parties){
+        let newMembers = $.grep(parti.members, member =>{
+            return member.uid != memberToRemove.uid;
+        });
+        let newMemberIds = $.grep(parti.memberIds, memberId =>{
+            return memberId != memberToRemove.uid;
+        });
+        let newPending = parti.pendingMembers;
+        let newPendingIds = parti.pendingMemberIds;
+        newPending.push(memberToRemove);
+        newPendingIds.push(memberToRemove.uid);
+        const updatedParty: parties = {
+            partyId: parti.partyId,
+            partyName: parti.partyName,
+            partyType: parti.partyType,
+            partyLeader: parti.partyLeader,
+            minMembers: parti.minMembers,
+            maxMembers: parti.maxMembers,
+            memberCount: parti.memberCount - 1,
+            pendingMemberCount: parti.pendingMemberCount + 1,
+            groupNames: parti.groupNames,
+            groupIds: parti.groupIds,
+            time: parti.time,
+            exptime: parti.exptime,
+            place: parti.place,
+            members: newMembers,
+            memberIds: newMemberIds,
+            pendingMembers: newPending,
+            pendingMemberIds: newPendingIds,
+            isFull: false,
+        }
+        this.afs.collection('parties').doc(parti.partyId).update(updatedParty).then(()=>{
+            console.log('removed member: ',memberToRemove.uid);
+        });
+
     partiDetail(partiID:string){
         this.partiIDtoshow = partiID;
         this.router.navigate(["parti-detail"]);
+
     }
 }
