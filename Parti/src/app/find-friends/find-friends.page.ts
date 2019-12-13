@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../providers/auth.service';
-import { Router } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AddFriendService } from '../../providers/addfriend.service';
 import { AlertService } from '../../providers/alert.service';
 import { partiUser } from '../../models/user.model';
 import { take } from 'rxjs/operators'
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class FindFriendsPage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router : Router,
+    private navCtrl : NavController,
     private afs: AngularFirestore,
     private addFriendService: AddFriendService,
     private alertService : AlertService
@@ -31,7 +31,7 @@ export class FindFriendsPage implements OnInit {
   
   findUser(emailIn:string){
     const email = emailIn.toLowerCase();
-    this.authService.user$.subscribe( currUser =>{
+    this.authService.getUserData().subscribe( currUser =>{
       if(currUser.email.toLowerCase() == email){
         console.log("That's your email!");
         this.alertService.inputAlert("That's your email!");
@@ -57,8 +57,8 @@ export class FindFriendsPage implements OnInit {
       }
     });
   }
-  goToProfilePage(){
-    this.router.navigate(['/tabs/user-profile']);
+  goBack(){
+    this.navCtrl.back();
   }
   addUser(friend:partiUser){
     this.addFriendService.addFriend(friend);

@@ -35,8 +35,8 @@ export class UserProfilePage {
   goToFindFriendsPage(){
     this.router.navigate(['/find-friends']);
   }
-  goToChangeDisplayName(){
-    this.router.navigate(['/user-creation']);
+  goToEditName(){
+    this.router.navigate(['/edit-name']);
   }
   signOut(){
     this.alertService.SignOutAlert();
