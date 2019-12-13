@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { AlertService } from '../../providers/alert.service';
 import { Events } from '@ionic/angular';
 import { PartiService } from '../../providers/parti.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-party',
@@ -21,13 +22,13 @@ export class CreatePartyPage implements OnInit {
 	@ViewChild('signupSlider',{static:false}) signupSlider;
 
 	private partiForm: FormGroup;
-    private submitAttempt: boolean = false;
+    private submitAttempt: boolean;
     private minMoreThanMax:boolean;
     private minArray: Array<number>;
     private maxArray: Array<number>;
-    private groups:any=[];
+    private groups:Array<any>;
     private today = moment().format("YYYY-MM-DD");
-    private startDateSelected:boolean = false;
+    private startDateSelected:boolean;
     private startDate:string;
     private hourArray: Array<number>;
     private friendArray: Array<any>;
@@ -43,13 +44,20 @@ export class CreatePartyPage implements OnInit {
         private partiService:PartiService,
         private afAuth:AngularFireAuth
         ) {
+            this.groups = [];
+            this.submitAttempt = false;
+            this.startDateSelected = false;
             console.log(this.today);
-            this.groupService.groups$.subscribe(data=>{
-                this.groups=data;
+            this.groupService.getGroups().subscribe(data=>{
+                if(data && data.length){
+                    this.groups=data;
+                }
             });
-            this.authService.user$.subscribe(data=>{
-                this.user = data;
-                this.friendArray = data.friends;
+            this.authService.getUserData().subscribe(data=>{
+                if(data){
+                    this.user = data;
+                    this.friendArray = data.friends;
+                }
             })
             this.minArray = this.rangeMembers(9);
             this.maxArray = this.rangeMembers(20);
@@ -200,6 +208,9 @@ export class CreatePartyPage implements OnInit {
         this.events.subscribe('parti:start',()=>{
             this.partiService.createParty(parti);
         });
+    }
+    logGroups(){
+        console.log(this.groups);
     }
 
 }

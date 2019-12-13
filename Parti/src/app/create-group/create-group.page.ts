@@ -28,12 +28,14 @@ export class CreateGroupPage implements OnInit {
   ) {}
   ngOnInit() {
     this.authService.user$.subscribe(data=>{
-      this.friendArray = data.friends;
-      this.user = data;
-      let fbargs = {};
-      this.friendArray.forEach(friend => {
-        fbargs[friend.uid] = []});
-      this.form = this.fb.group(fbargs);
+      if(data){
+        this.friendArray = data.friends;
+        this.user = data;
+        let fbargs = {};
+        this.friendArray.forEach(friend => {
+          fbargs[friend.uid] = []});
+        this.form = this.fb.group(fbargs);
+      }
     })
   }
   

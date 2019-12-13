@@ -15,13 +15,14 @@ export class GroupService{
         private alertService: AlertService,
         private router: Router,
         private afAuth: AngularFireAuth
-    ){
-        this.groups$ = this.collection.valueChanges();
-    }
+    ){}
+
     collection = this.afs.collection('groups', ref => ref.where('memberIds','array-contains',this.afAuth.auth.currentUser.uid));
-    group$: Observable<partiGroup>;
     groupToEdit:string;
-    groups$:Observable<any[]>;
+    
+    getGroups():Observable<any[]>{
+        return this.collection.valueChanges();
+    }
     createGroup(groupNameIn:string,members:Array<any>){
         let membersStripped=[];
         let memberIdArr:Array<string> = [];
@@ -79,5 +80,5 @@ export class GroupService{
           return uid != memberUidToRemove;
         });
         this.updateMembers(group.groupId,newMembers,newMemberIds);
-      }
+    }
 }

@@ -15,6 +15,14 @@ import { AlertService } from '../../providers/alert.service';
 })
 export class EditGroupPage implements OnInit {
 
+  addUserForm:FormGroup;
+  members:Array<any>;
+  membersWithoutCurrUser:Array<any>;
+  nonMembers:Array<any>;
+  groupId:string = this.groupService.groupToEdit;
+  group:partiGroup;
+  user:partiUser;
+
   constructor(
     private fb: FormBuilder,
     private groupService: GroupService,
@@ -23,40 +31,36 @@ export class EditGroupPage implements OnInit {
     private router: Router,
     private events: Events,
     private alertService: AlertService
-  ) {}
-  addUserForm:FormGroup;
-  members:Array<any>;
-  membersWithoutCurrUser:Array<any>;
-  nonMembers:Array<any>;
-  groupId:string = this.groupService.groupToEdit;
-  group:partiGroup;
-  user:partiUser;
-  ngOnInit() {
+  ) {
     this.authService.user$.subscribe(data=>{
       this.user = data;
       this.afs.collection('groups').doc<partiGroup>(this.groupId)
         .valueChanges()
         .subscribe(data=>{
-          this.group = data;
-          this.members = data.members;
-          this.membersWithoutCurrUser = [];
-          let memberIds = [];
-          this.members.forEach(member=>{
-            memberIds.push(member.uid);
-            if(member.uid != this.user.uid){
-              this.membersWithoutCurrUser.push(member);
-            }
-          });
-          this.nonMembers = [];
-          let fbNonMemberArgs = {};
-          this.nonMembers = this.user.friends.filter(item => memberIds.indexOf(item.uid) < 0);
-          this.nonMembers.forEach(user => {
-            fbNonMemberArgs[user.uid] = []
-          });
+          if(data){
+            this.group = data;
+            this.members = data.members;
+            this.membersWithoutCurrUser = [];
+            let memberIds = [];
+            this.members.forEach(member=>{
+              memberIds.push(member.uid);
+              if(member.uid != this.user.uid){
+                this.membersWithoutCurrUser.push(member);
+              }
+            });
+            this.nonMembers = [];
+            let fbNonMemberArgs = {};
+            this.nonMembers = this.user.friends.filter(item => memberIds.indexOf(item.uid) < 0);
+            this.nonMembers.forEach(user => {
+              fbNonMemberArgs[user.uid] = []
+            });
 
-          this.addUserForm = this.fb.group(fbNonMemberArgs);
+            this.addUserForm = this.fb.group(fbNonMemberArgs);
+          }
         })
     });
+  }
+  ngOnInit() {
   }
   addMembers(){
     let membersToAdd:Array<any> = [];

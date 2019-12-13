@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../providers/auth.service';
 import { partiUser } from '../../models/user.model';
 import { Router } from '@angular/router';
@@ -24,13 +24,12 @@ export class UserProfilePage {
     private events: Events,
     private photoService: PhotoService
   ) {
-    this.authService.user$.subscribe(currUser => {
-      this.user = currUser;
-      this.friends = this.user.friends;
+    this.authService.getUserData().subscribe(currUser => {
+      if(currUser){
+        this.user = currUser;
+        this.friends = this.user.friends;
+      }
     });
-  }
-
-  ngOnInit() {
   }
 
   goToFindFriendsPage(){

@@ -14,6 +14,9 @@ import * as moment from 'moment';
 export class PartiesPage {
 
   user: partiUser;
+  parties: Array<any>;
+  pendingParties: Array<any>;
+  itemExpandHeight: number = 200;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -21,28 +24,33 @@ export class PartiesPage {
     private router: Router,
     private partiService: PartiService
     ) {
-      this.authService.user$.subscribe(currUser => { /**currUser is emitted data */
-        this.user = currUser;
-        console.log(currUser);
+      this.parties = [];
+      this.pendingParties = [];
+      this.authService.getUserData().subscribe(currUser => { /**currUser is emitted data */
+        if(currUser){
+          this.user = currUser;
+          console.log(currUser);
+        }
       }); /**always update change in current user */
-      this.partiService.parties$.subscribe(data=>{
-        data.forEach(party=>{
-          party["expanded"]=false;
-        });
-        this.parties = data;
+      this.partiService.getOngoingParties().subscribe(data=>{
+        if(data && data.length){
+          console.log('parties found');
+          data.forEach(party=>{
+            party["expanded"]=false;
+          });
+          this.parties = data;
+        }
       });
-      this.partiService.pendingParties$.subscribe(data=>{
-        data.forEach(party=>{
-          party["expanded"]=false;
-        });
-        this.pendingParties = data;
-        console.log(this.pendingParties);
+      this.partiService.getPendingParties().subscribe(data=>{
+        if(data){
+          data.forEach(party=>{
+            party["expanded"]=false;
+          });
+          this.pendingParties = data;
+          console.log(this.pendingParties);
+        }        
       });
     }
-  
-  parties: Array<any> = [];
-  pendingParties: Array<any> =[];
-  itemExpandHeight: number = 200;
 
   ngOnInit(){
   }

@@ -29,6 +29,7 @@
     "@ionic/angular": "^4.7.1",
     "@types/jquery": "^3.3.31",
     "angularfire2": "^5.2.3",
+    "cordova-android": "8.1.0",
     "cordova-browser": "6.0.0",
     "cordova-ios": "5.1.1",
     "cordova-plugin-camera": "^4.1.0",
@@ -92,7 +93,8 @@
     "platforms": [
       "browser",
       "windows",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

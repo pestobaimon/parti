@@ -24,7 +24,6 @@ export class FindFriendsPage implements OnInit {
   ) { }
 
   ngOnInit() {
-
   }
 
   friendList: Array<any>;
