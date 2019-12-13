@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth'
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { partiUser } from '../models/user.model'
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators'
 import { AlertService } from './alert.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
+    user$: Observable<partiUser>; /**variable type is obs emit partiUser type */
     constructor( /**run everytime when create new instant(one instant per user) */
         private afAuth : AngularFireAuth,
         private afs: AngularFirestore,   /**read write database */     
@@ -46,9 +47,8 @@ export class AuthService {
             }   
         });
     }
-    authState = new BehaviorSubject(false);
     
-    user$: Observable<partiUser>; /**variable type is obs emit partiUser type */
+    
     public setUserData(user: partiUser) {
         return this.afs.doc<partiUser>(`users/${user.uid}`).set(user);
       }

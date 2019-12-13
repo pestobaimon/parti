@@ -25,8 +25,10 @@ export class UserProfilePage {
     private photoService: PhotoService
   ) {
     this.authService.user$.subscribe(currUser => {
-      this.user = currUser;
-      this.friends = this.user.friends;
+      if(currUser){
+        this.user = currUser;
+        this.friends = this.user.friends;
+      }
     });
   }
 

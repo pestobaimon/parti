@@ -25,10 +25,14 @@ export class GroupsPage {
     private events: Events
   ){
     this.groupService.groups$.subscribe(data=>{
-      this.groups = data;
+      if(data){
+        this.groups = data;
+      }
     });
     this.authService.user$.subscribe(userData=>{
-      this.user = userData;
+      if(userData){
+        this.user = userData;
+      }      
     });
   }
   groupName:string;
