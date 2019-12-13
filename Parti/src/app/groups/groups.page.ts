@@ -6,6 +6,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -15,21 +16,20 @@ import { Events } from '@ionic/angular';
 })
 @Injectable({providedIn:'root'})
 export class GroupsPage {
-
   constructor(
     private groupService : GroupService,
     private afs : AngularFirestore,
     private afAuth : AngularFireAuth,
     private authService : AuthService,
     private router: Router,
-    private events: Events
+    private events: Events,
   ){
-    this.groupService.groups$.subscribe(data=>{
+    this.groupService.getGroups().subscribe(data=>{
       if(data){
         this.groups = data;
       }
     });
-    this.authService.user$.subscribe(userData=>{
+    this.authService.getUserData().subscribe(userData=>{
       if(userData){
         this.user = userData;
       }      

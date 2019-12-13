@@ -8,22 +8,13 @@ import { AlertService } from './alert.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-    user$: Observable<partiUser>; /**variable type is obs emit partiUser type */
+     /**variable type is obs emit partiUser type */
     constructor( /**run everytime when create new instant(one instant per user) */
         private afAuth : AngularFireAuth,
         private afs: AngularFirestore,   /**read write database */     
         private alertService: AlertService
 
     ){
-        this.user$ = this.afAuth.authState.pipe(    
-            switchMap(user => { /**run newest data */
-                if (user){
-                    return this.afs.doc<partiUser>(`users/${user.uid}`).valueChanges(); /**ja emit when valuechange, return observable of document with document id as logged in uid */
-                }else{ /**aow other data tee pen obseravable kong uid nee ma display */
-                    return of(null);
-                }
-            })
-        );
         this.afAuth.authState.pipe(take(1)).subscribe(user =>{ /**pen new user or not */
             if(user){ 
                 const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
@@ -48,12 +39,23 @@ export class AuthService {
         });
     }
     
+    getUserData():Observable<partiUser>{
+        return this.afAuth.authState.pipe(    
+                switchMap(user => { /**run newest data */
+                    if (user){
+                        return this.afs.doc<partiUser>(`users/${user.uid}`).valueChanges(); /**ja emit when valuechange, return observable of document with document id as logged in uid */
+                    }else{ /**aow other data tee pen obseravable kong uid nee ma display */
+                        return of(null);
+                    }
+                    })
+                );
+    }
     
-    public setUserData(user: partiUser) {
+    setUserData(user: partiUser) {
         return this.afs.doc<partiUser>(`users/${user.uid}`).set(user);
       }
     
-    private updateUserData(user: partiUser) {
+    updateUserData(user: partiUser) {
         return this.afs.doc<partiUser>(`users/${user.uid}`).update(user);
       }
     

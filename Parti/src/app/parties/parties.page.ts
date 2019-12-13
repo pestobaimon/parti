@@ -26,13 +26,13 @@ export class PartiesPage {
     ) {
       this.parties = [];
       this.pendingParties = [];
-      this.authService.user$.subscribe(currUser => { /**currUser is emitted data */
+      this.authService.getUserData().subscribe(currUser => { /**currUser is emitted data */
         if(currUser){
           this.user = currUser;
           console.log(currUser);
         }
       }); /**always update change in current user */
-      this.partiService.parties$.subscribe(data=>{
+      this.partiService.getOngoingParties().subscribe(data=>{
         if(data && data.length){
           console.log('parties found');
           data.forEach(party=>{
@@ -41,7 +41,7 @@ export class PartiesPage {
           this.parties = data;
         }
       });
-      this.partiService.pendingParties$.subscribe(data=>{
+      this.partiService.getPendingParties().subscribe(data=>{
         if(data){
           data.forEach(party=>{
             party["expanded"]=false;

@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { AlertService } from '../../providers/alert.service';
 import { Events } from '@ionic/angular';
 import { PartiService } from '../../providers/parti.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-party',
@@ -47,13 +48,12 @@ export class CreatePartyPage implements OnInit {
             this.submitAttempt = false;
             this.startDateSelected = false;
             console.log(this.today);
-            this.groupService.groups$.subscribe(data=>{
+            this.groupService.getGroups().subscribe(data=>{
                 if(data && data.length){
                     this.groups=data;
-                }else{
                 }
             });
-            this.authService.user$.subscribe(data=>{
+            this.authService.getUserData().subscribe(data=>{
                 if(data){
                     this.user = data;
                     this.friendArray = data.friends;

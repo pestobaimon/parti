@@ -19,23 +19,25 @@ export class PartiService{
         private alertService: AlertService,
         private authService: AuthService,
         private router: Router
-    ){
-        
-        this.pendingParties$ = this.pendingCollection.valueChanges();
-        this.authService.user$.subscribe(data=>{
+    ){    
+        this.authService.getUserData().subscribe(data=>{
             this.user = data;
         })
-        this.parties$ = this.acceptedCollection.valueChanges();
-
     }
     private user:partiUser;
     private uid = this.afAuth.auth.currentUser.uid;
     private pendingCollection = this.afs.collection('parties',ref => ref.where('pendingMemberIds','array-contains',this.uid));
     private acceptedCollection = this.afs.collection('parties',ref=> ref.where('memberIds','array-contains',this.uid))
     public partiIDtoshow:string;
-    
-    public pendingParties$:Observable<any[]>;
-    public parties$:Observable<any[]>;
+
+    getOngoingParties():Observable<any[]>{
+        return this.acceptedCollection.valueChanges();
+    }
+
+    getPendingParties():Observable<any[]>{
+        return this.pendingCollection.valueChanges();
+    }
+
     createParty(parti:parties){
         this.afs.collection('parties').add(parti).then(data=>{
             data.update({partyId : data.id});
