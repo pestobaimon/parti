@@ -27,7 +27,7 @@ export class CreateGroupPage implements OnInit {
     private alertService : AlertService
   ) {}
   ngOnInit() {
-    this.authService.user$.subscribe(data=>{
+    this.authService.getUserData().subscribe(data=>{
       if(data){
         this.friendArray = data.friends;
         this.user = data;

@@ -15,18 +15,12 @@ export class AddFriendService{
         private afAuth : AngularFireAuth,
         private alertService: AlertService,
         private authService: AuthService
-    ){
-        this.authService.user$.subscribe(data=>{
-            if(data){
-                this.user=data;
-            }
-        })
-    }
+    ){}
     user:partiUser;
     friendExists: boolean;
     
     addFriend(friendIn:partiUser){
-        this.authService.user$.pipe(take(1)).subscribe(user=>{
+        this.authService.getUserData().pipe(take(1)).subscribe(user=>{
             this.friendExists = false;
             user.friends.forEach(friend=>{
                 if(friend.uid == friendIn.uid){

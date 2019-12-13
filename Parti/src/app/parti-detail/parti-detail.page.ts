@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { partiGroup, partiUser, parties } from 'src/models/user.model';
 import { PartiService } from 'src/providers/parti.service';
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as moment from 'moment';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -10,7 +11,7 @@ import * as moment from 'moment';
   templateUrl: './parti-detail.page.html',
   styleUrls: ['./parti-detail.page.scss'],
 })
-export class PartiDetailPage implements OnInit {
+export class PartiDetailPage {
   group:partiGroup;
   user:partiUser;
   partiID:string = this.partiService.partiIDtoshow;
@@ -21,6 +22,7 @@ export class PartiDetailPage implements OnInit {
   constructor(
     private partiService: PartiService,
     private afs: AngularFirestore,
+    private navCtrl: NavController
   ) { 
     console.log(this.partiID);
     this.afs.collection("parties").doc<parties>(this.partiID)
@@ -34,11 +36,15 @@ export class PartiDetailPage implements OnInit {
       console.log(this.pending);
     })
   }
-  
-  ngOnInit() {
+  goBack(){
+    this.navCtrl.back();
   }
+  
   convertTimeStamp(timestamp:any){
     const time = Number(timestamp.seconds);
     return moment.unix(time).format('DD/MM/YYYY');
+  }
+  back(){
+
   }
 }

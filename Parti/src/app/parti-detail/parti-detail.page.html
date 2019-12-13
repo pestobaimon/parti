@@ -1,8 +1,16 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="partiToView">{{partiToView.partyName}}</ion-title>
+    <ion-title *ngIf="partiToView" class='ion-text-center'>
+      {{partiToView.partyName}}
+    </ion-title>
+    <ion-buttons slot="start">
+        <ion-button (click)="goBack()"><ion-icon slot="start" name="arrow-back"></ion-icon> Back</ion-button>
+    </ion-buttons>
+    <div slot='end'class="div-comp"></div>
   </ion-toolbar>
 </ion-header>
+<ion-content class="ion-padding">
+      
 
 <ion-content *ngIf = "partiToView" class="ion-padding">
   <ion-list>

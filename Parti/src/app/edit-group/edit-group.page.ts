@@ -32,7 +32,7 @@ export class EditGroupPage implements OnInit {
     private events: Events,
     private alertService: AlertService
   ) {
-    this.authService.user$.subscribe(data=>{
+    this.authService.getUserData().subscribe(data=>{
       this.user = data;
       this.afs.collection('groups').doc<partiGroup>(this.groupId)
         .valueChanges()

@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../providers/auth.service';
 import { AlertService } from '../../providers/alert.service';
-import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-user-creation',
-  templateUrl: './user-creation.page.html',
-  styleUrls: ['./user-creation.page.scss'],
+  selector: 'app-edit-name',
+  templateUrl: './edit-name.page.html',
+  styleUrls: ['./edit-name.page.scss'],
 })
-export class UserCreationPage implements OnInit {
+export class EditNamePage implements OnInit {
 
   displayName:string;
   constructor(
     private authService : AuthService,
     private alertService : AlertService,
-    private router : Router
+    private navCtrl : NavController
   ) { }
 
   setDisplayName(name:string){
@@ -26,7 +26,7 @@ export class UserCreationPage implements OnInit {
   }
   ngOnInit() {
   }
-  goToProfilePage(){
-    this.router.navigate(['/tabs/user-profile']);
+  goBack(){
+    this.navCtrl.back();
   }
 }

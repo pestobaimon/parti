@@ -19,7 +19,7 @@
     <ion-button (click)="changeProfilePic()">change pic</ion-button>
     <ion-item lines="none">
         <div *ngIf="user" >Display name: {{user.displayName}}</div>
-        <ion-button (click)="goToChangeDisplayName()" slot='end'>change</ion-button>
+        <ion-button (click)="goToEditName()" slot='end'>change</ion-button>
     </ion-item>
     <ion-item lines="none">
         <div *ngIf="user" >Email: {{user.email}}</div>
