@@ -1,0 +1,61 @@
+@import url("parti-detail.page.ts");
+*, *::before, *::after{
+    box-sizing: border-box;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+}
+
+.progress-bar{
+    position: relative;
+    width: 500px;
+    height: 3em;  /* em =scaled with the fonts inside the bar*/
+    background-color: #46aca3;
+    border-radius: 1.5em;
+    color: white;
+}
+
+/*.container{
+    width: 100%;
+}
+.progress-bar li{
+    list-style-type: none;
+    float: left;
+    width: 33.3%;
+    position: relative;
+    text-align: center;
+}
+.progress-bar li:before{
+    content: 'minimum';
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ddd;
+    display: block;
+    text-align: center;
+    margin: 0 auto 10px auto;
+
+}*/
+
+:root{
+    $currMem:
+    $maxMem;
+}
+
+.progress-bar::before{
+    content:attr(data-label);
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: .5em;
+    top: .5em;
+    bottom: .5em;
+    width: calc(#{$currMem} / #{$maxMem});
+    min-width: 2rem;
+    max-width: calc(100% - 1em);
+    background-color: #ff9900;
+    border-radius: 1em;
+    padding: 1em;
+}
+

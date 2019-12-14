@@ -20,7 +20,7 @@ export interface parties {
     partyType: string;
     partyLeader: partiUser;
     minMembers: number;
-    maxMembers: any;
+    maxMembers: number;
     memberCount:number;
     pendingMemberCount:number;
     groupNames?: Array<string>;
