@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { partiGroup, partiUser, parties } from 'src/models/user.model';
 import { PartiService } from 'src/providers/parti.service';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
 
 
@@ -17,6 +17,8 @@ export class PartiDetailPage implements OnInit {
   partiToView:parties;
   members:Array<any>;
   pending:Array<any>;
+  percentage:number;
+  setProgressBar:string;
 
   constructor(
     private partiService: PartiService,
@@ -27,18 +29,33 @@ export class PartiDetailPage implements OnInit {
     .valueChanges()
     .subscribe(party=>{
       this.partiToView = party;
-      console.log(this.partiToView);
+      
       this.members= party.members;
-      console.log(this.members);
+      
       this.pending = party.pendingMembers;
-      console.log(this.pending);
-    })
+      
+      this.percentage = (party.memberCount / party.maxMembers)*100;
+
+      this.setProgressBar = "progress-bar p-" + this.percentage;
+      console.log(this.setProgressBar);
+    });
   }
   
   ngOnInit() {
+    var $progressBar = $('.progress-bar');
+    setInterval(function() {
+        var newPercentage = Math.round(Math.random() * 100);
+        $progressBar 
+            .removeClass(this.findProgressPercentageClasses)
+            .addClass('p-' + 20);
+    }, 1000);
   }
   convertTimeStamp(timestamp:any){
     const time = Number(timestamp.seconds);
     return moment.unix(time).format('DD/MM/YYYY');
   }
+
+  findProgressPercentageClasses(index, css) {
+    return (css.match(/p-.*/) || []).join(' ');
+}
 }

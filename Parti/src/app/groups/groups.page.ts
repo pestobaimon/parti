@@ -2,7 +2,7 @@ import { Component, Injectable } from '@angular/core';
 import { GroupService } from '../../providers/group.service';
 import { partiUser } from '../../models/user.model';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';

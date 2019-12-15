@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AddFriendService } from '../../providers/addfriend.service';
 import { AlertService } from '../../providers/alert.service';
 import { partiUser } from '../../models/user.model';

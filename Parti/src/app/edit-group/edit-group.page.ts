@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GroupService } from '../../providers/group.service';
 import { AuthService } from '../../providers/auth.service';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { partiUser, partiGroup } from '../../models/user.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';

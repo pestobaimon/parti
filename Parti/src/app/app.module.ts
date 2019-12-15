@@ -13,7 +13,7 @@ import { FirebaseUIModule, firebase, firebaseui } from 'firebaseui-angular';
 
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import {environment} from 'src/environments/environment';
 
 import { AngularFireAuthGuard } from '@angular/fire/auth-guard';

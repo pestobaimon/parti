@@ -41,8 +41,11 @@
         <strong>Minimum member: </strong>{{partiToView.minMembers}}
     </ion-item>
     <ion-item>
-      <div class="progress-bar" data-label="members"></div> 
-
+      <div class="wrapper">
+        <div id="download-progress">
+          <div [class]="setProgressBar"></div>
+        </div>
+      </div>
     </ion-item>
   </ion-list>
 </ion-content>
