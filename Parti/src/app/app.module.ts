@@ -13,8 +13,8 @@ import { FirebaseUIModule, firebase, firebaseui } from 'firebaseui-angular';
 
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import {environment} from 'src/environments/environment';
 

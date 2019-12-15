@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth'
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { partiUser } from '../models/user.model'
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators'

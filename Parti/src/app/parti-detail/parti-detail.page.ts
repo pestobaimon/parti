@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { partiGroup, partiUser, parties } from 'src/models/user.model';
 import { PartiService } from 'src/providers/parti.service';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
 import { NavController } from '@ionic/angular';
 

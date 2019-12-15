@@ -3,14 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../providers/auth.service';
 import { partiUser, partiGroup, parties } from '../../models/user.model';
-import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { GroupService } from '../../providers/group.service';
 import * as moment from 'moment';
 import { AlertService } from '../../providers/alert.service';
 import { Events } from '@ionic/angular';
 import { PartiService } from '../../providers/parti.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-party',
@@ -21,18 +19,18 @@ export class CreatePartyPage implements OnInit {
 
 	@ViewChild('signupSlider',{static:false}) signupSlider;
 
-	private partiForm: FormGroup;
-    private submitAttempt: boolean;
-    private minMoreThanMax:boolean;
-    private minArray: Array<number>;
-    private maxArray: Array<number>;
-    private groups:Array<any>;
-    private today = moment().format("YYYY-MM-DD");
-    private startDateSelected:boolean;
-    private startDate:string;
-    private hourArray: Array<number>;
-    private friendArray: Array<any>;
-    private user:partiUser;
+	partiForm: FormGroup;
+    submitAttempt: boolean;
+    minMoreThanMax:boolean;
+    minArray: Array<number>;
+    maxArray: Array<number>;
+    groups:Array<any>;
+    today = moment().format("YYYY-MM-DD");
+    startDateSelected:boolean;
+    startDate:string;
+    hourArray: Array<number>;
+    friendArray: Array<any>;
+    user:partiUser;
     uid = this.afAuth.auth.currentUser.uid;
     constructor(
         public formBuilder: FormBuilder,

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore, DocumentReference } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { parties, partiUser } from '../models/user.model';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';

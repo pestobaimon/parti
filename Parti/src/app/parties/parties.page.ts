@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
-import { partiUser, partiGroup, parties } from '../../models/user.model'
+import { partiUser, parties } from '../../models/user.model'
 import { PartiService } from '../../providers/parti.service';
 import * as moment from 'moment';
 

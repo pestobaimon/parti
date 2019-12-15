@@ -11,7 +11,7 @@
     Welcome {{user.displayName}}
   </h2>
    
-  <div *ngIf="pendingParties.length && pendingParties">
+  <div *ngIf="pendingParties.length">
     <h4 class="ion-text-center">Pending parties</h4>
     <ion-card *ngFor="let party of pendingParties" class="parti-card">
         <ion-card-header color='primary' (click)="expandToggle(party,'card')">
@@ -39,7 +39,7 @@
                   <ion-item class="item-tint" (click)="expandToggle(party,'member')">
                       <ion-label slot="start">Members</ion-label>
                       <ion-label>{{party.memberCount}}</ion-label>
-                      <ion-button fill="outline" slot="end" color='primary' (click)="showMembers(party.members)">view</ion-button>
+                      
                   </ion-item>
                   <ion-item>
                       <ion-label slot="start">Max Members</ion-label>
@@ -56,7 +56,7 @@
         </app-expandable>
     </ion-card>
   </div>
-  <div *ngIf="parties.length && parties">
+  <div *ngIf="parties.length">
       <h4 class="ion-text-center">Ongoing parties</h4>
       <ion-card *ngFor="let party of parties" class="parti-card">
           <ion-card-header color='primary' (click)="expandToggle(party,'card')">
@@ -84,7 +84,7 @@
                     <ion-item class="item-tint" (click)="expandToggle(party,'member')">
                         <ion-label slot="start">Members</ion-label>
                         <ion-label>{{party.memberCount}}</ion-label>
-                        <ion-button fill="outline" slot="end" color='primary' (click)="showMembers(party.members)">view</ion-button>
+                        
                     </ion-item>
                     <ion-item>
                         <ion-label slot="start">Max Members</ion-label>
@@ -100,8 +100,8 @@
           </app-expandable>
       </ion-card>
   </div>
-  <h4 class="ion-text-center" *ngIf="!pendingParties.length && !pendingParties">No pending parties</h4>
-  <h4 class="ion-text-center" *ngIf="!parties.length && !parties">No ongoing parties</h4>
+  <h4 class="ion-text-center" *ngIf="!pendingParties.length">No pending parties</h4>
+  <h4 class="ion-text-center" *ngIf="!parties.length">No ongoing parties</h4>
 </ion-content>
 <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="goToPage('/create-party')">

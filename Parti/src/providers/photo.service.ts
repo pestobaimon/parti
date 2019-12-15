@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({providedIn: 'root'})
 export class PhotoService {
