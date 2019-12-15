@@ -19,6 +19,7 @@ export class PartiDetailPage {
   members:Array<any>;
   pending:Array<any>;
   percentage:string = "0%";
+  minpercent:string = "0%";
   constructor(
     private partiService: PartiService,
     private afs: AngularFirestore,
@@ -37,6 +38,8 @@ export class PartiDetailPage {
 
       this.percentage = party.memberCount/party.maxMembers*100 + "%";
       console.log(this.percentage);
+      this.minpercent = party.minMembers/party.maxMembers*100 + "%";
+      console.log(this.minpercent);
     })
   }
   goBack(){
