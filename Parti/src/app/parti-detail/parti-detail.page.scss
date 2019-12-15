@@ -1,0 +1,101 @@
+
+
+    HTML SCSS 
+
+    Result 
+
+body {
+  padding: 20px;
+  background: #242424;
+}
+
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+h1, h2, h3 {
+  font-family: arial;
+  color: #fff;
+}
+
+/** progress bar styles **/
+$default: #ecf0f1;
+$success: #3880ff;
+$error: #e74c3c;
+
+.progress {
+  height: 25px;
+  border-radius: 20px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #bdc3c7;
+  overflow: hidden;
+}
+
+.progress__bar {
+  height: 100%;
+  background: $default;
+  position: relative;
+  transition: width .3s ease;
+}
+
+/* Progress thin */
+.progress--thin {
+  height: 10px;
+}
+
+.progress--dashed {
+  border-style: dashed;
+}
+
+/* Success theme */
+.progress--success {
+  border-color: #3880ff;
+}
+
+.progress--success .progress__bar {
+  background: $success;
+}
+
+/* Error theme */
+.progress--error {
+  border-color: #c0392b;
+}
+
+.progress--error .progress__bar {
+  background: $error;
+}
+
+/* Cursor indicator */
+.progress--cursor .progress__bar:after {
+  content: '';
+  display: block;
+  height: 25px;
+  width: 5px;
+  background-color: #7f8c8d;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  animation: cursor 2s ease 0s infinite;
+  -webkit-animation: cursor 2s ease 0s infinite;
+}
+
+.progress--cursor.progress--success .progress__bar:after {
+  background-color: darken($success, 20%);
+}
+
+.progress--cursor.progress--error .progress__bar:after {
+  background-color: darken($error, 20%);
+}
+
+@keyframes cursor {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
