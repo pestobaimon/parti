@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { partiGroup, partiUser, parties } from 'src/models/user.model';
+import { partiGroup, partiUser, parties } from 'src/models/data.model';
 import { PartiService } from 'src/providers/parti.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
@@ -18,6 +18,7 @@ export class PartiDetailPage {
   partiToView:parties;
   members:Array<any>;
   pending:Array<any>;
+  percentage:string = "0%";
 
   constructor(
     private partiService: PartiService,
@@ -29,11 +30,9 @@ export class PartiDetailPage {
     .valueChanges()
     .subscribe(party=>{
       this.partiToView = party;
-      console.log(this.partiToView);
       this.members= party.members;
-      console.log(this.members);
       this.pending = party.pendingMembers;
-      console.log(this.pending);
+      this.percentage = party.memberCount/party.maxMembers*100 + "%";
     })
   }
   goBack(){

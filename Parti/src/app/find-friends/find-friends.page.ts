@@ -3,7 +3,7 @@ import { AuthService } from '../../providers/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AddFriendService } from '../../providers/addfriend.service';
 import { AlertService } from '../../providers/alert.service';
-import { partiUser } from '../../models/user.model';
+import { partiUser } from '../../models/data.model';
 import { take } from 'rxjs/operators'
 import { NavController } from '@ionic/angular';
 

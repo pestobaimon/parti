@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../providers/auth.service';
-import { partiUser } from '../../models/user.model';
+import { partiUser } from '../../models/data.model';
 import { GroupService } from '../../providers/group.service';
 import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';

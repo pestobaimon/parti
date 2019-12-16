@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GroupService } from '../../providers/group.service';
 import { AuthService } from '../../providers/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { partiUser, partiGroup } from '../../models/user.model';
+import { partiUser, partiGroup } from '../../models/data.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';

@@ -29,7 +29,8 @@ export interface parties {
     members: Array<any>;
     memberIds:Array<any>;
     time: Date;
-    exptime: Date;
+    exptime: any;
     place: string;
     isFull:boolean;
+    isExpired:boolean;
 }
