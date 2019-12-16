@@ -1,4 +1,4 @@
-body {
+/*body {
   padding: 20px;
   background: #242424;
 }
@@ -13,29 +13,43 @@ h1, h2, h3 {
   color: #fff;
 }
 
-/** progress bar styles **/
+progress bar styles 
 $default: #ecf0f1;
 $success: #3880ff;
-$error: #e74c3c;
+$error: #e74c3c; */
 
-.progress {
-  height: 25px;
-  border-radius: 20px;
-  border-width: 1px;
-  border-style: solid;
+.meter {
+  height: 20px;
+  background: #555;
+  -moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  border-radius: 25px;
+  padding: 10px;
+  box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+  position: relative;
+  transition: width .3s ease;
+  /*border-style: solid;
   border-color: #bdc3c7;
+  overflow: hidden;*/
+}
+
+/*.meter > span {
+  position: relative;
+  display: inline-block;
+  height: 20px;
+  box-shadow: inset 0 2px 9px rgba(255,255,255,0.3), inset 0 -2px 6px rgba(0,0,0,0.4);
   overflow: hidden;
 }
 
-.progress__bar {
-  height: 100%;
+/*.progress__bar {
+  height: 20px;
   background: $default;
   position: relative;
   transition: width .3s ease;
 }
 
 
-/* Progress thin */
+/* Progress thin 
 .progress--thin {
   height: 10px;
 }
@@ -45,24 +59,87 @@ $error: #e74c3c;
 }
 
 /* Success theme */
-.progress--success {
-  border-color: #3880ff;
+.meter-curr {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  display: inline-block;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background-color: #2bc069;
+  overflow: hidden;
 }
 
-.progress--success .progress__bar {
+.meter-min {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  display: inline-block;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  background-color: #e40808;
+  overflow: hidden;
+}
+
+.meter-left {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0em;
+  float: right;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  background-color: #08c3e4;
+}
+
+
+/*.progress--success .progress__bar {
+  float: left;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 20px;
+  border-color: #3880ff;
   background: $success;
 }
 
 /* Error theme */
-.progress--error {
+
+
+/*.progress--error .progress__bar {
+  float: right;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 20px;
   border-color: #c0392b;
-}
-
-.progress--error .progress__bar {
   background: $error;
+}*/
+
+.meter p{
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
 }
 
-.progress--success .pg-label{
+.meter b{
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  color: #fff;
+  font-weight: bold;
+}
+
+/*.progress--success .pg-label{
   position: absolute;
   left:0;
   top: -30px;
@@ -92,7 +169,7 @@ $error: #e74c3c;
   transform: translateY(-50%);
 }
 
-/* Cursor indicator */
+/* Cursor indicator 
 .progress--cursor .progress__bar:after {
   content: '';
   display: block;
@@ -122,5 +199,5 @@ $error: #e74c3c;
   100% {
     opacity: 0;
   }
-}
+}*/
 

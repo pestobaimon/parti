@@ -48,17 +48,12 @@
     <ion-item>
         <strong>Minimum member: </strong>{{partiToView.minMembers}}
     </ion-item>
-    <div class="progress progress--success">
-      <div class="progress__bar" [style.width]="percentage">
-        <span class="pb-label">current members</span> 
-      </div>
-    </div>
-    <div class="progress progress--error">
-      <div class="progress__bar" [style.width]="minpercent">
-        <span class="pb-percent">minimum members</span>
-      </div>
-    </div>
     <ion-item>
+    <div class="meter" style="width: 100%">
+    <div class="meter-min" [style.width]="minpercent"><b>minimum</b></div>
+    <div class="meter-curr" [style.width]="percentage"><p>current members</p></div>
+    <div class="meter-left" [style.width]="leftover"><p>available</p></div>
+    </div>
     </ion-item>
   </ion-list>
 </ion-content>
