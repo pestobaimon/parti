@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from '@angular/fire/firestore';
-import { parties, partiUser } from '../models/user.model';
+import { parties, partiUser } from '../models/data.model';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from './alert.service';
@@ -22,12 +22,30 @@ export class PartiService{
     ){    
         this.authService.getUserData().subscribe(data=>{
             this.user = data;
-        })
+        });
+        this.acceptedCollection.valueChanges().subscribe(partiArray => {
+            partiArray.forEach(parti => { 
+                if(parti.exptime.seconds<Math.floor(Date.now() / 1000)){
+                    this.afs.collection('parties').doc(parti.partyId).update({isExpired:true});
+                }else{
+                    console.log('parti not expired');
+                }
+            });
+        });
+        this.pendingCollection.valueChanges().subscribe(partiArray => {
+            partiArray.forEach(parti => { 
+                if(parti.exptime.seconds<Math.floor(Date.now() / 1000)){
+                    this.afs.collection('parties').doc(parti.partyId).update({isExpired:true});
+                }else{
+                    console.log('parti not expired');
+                }
+            });
+        });
     }
     private user:partiUser;
     private uid = this.afAuth.auth.currentUser.uid;
-    private pendingCollection = this.afs.collection('parties',ref => ref.where('pendingMemberIds','array-contains',this.uid));
-    private acceptedCollection = this.afs.collection('parties',ref=> ref.where('memberIds','array-contains',this.uid))
+    private pendingCollection = this.afs.collection<parties>('parties',ref => ref.where('isExpired','==',false).where('pendingMemberIds','array-contains',this.uid));
+    private acceptedCollection = this.afs.collection<parties>('parties',ref=> ref.where('isExpired','==',false).where('memberIds','array-contains',this.uid))
     public partiIDtoshow:string;
 
     getOngoingParties():Observable<any[]>{
@@ -92,6 +110,7 @@ export class PartiService{
                 pendingMembers: newPending,
                 pendingMemberIds: newPendingUid,
                 isFull: isFull,
+                isExpired: parti.isExpired
             }
             this.afs.collection('parties').doc(parti.partyId).update(updatedParty).then(()=>{
                 console.log('joined');
@@ -131,6 +150,7 @@ export class PartiService{
             pendingMembers: newPending,
             pendingMemberIds: newPendingIds,
             isFull: false,
+            isExpired: parti.isExpired
         }
         this.afs.collection('parties').doc(parti.partyId).update(updatedParty).then(()=>{
             console.log('removed member: ',memberToRemove.uid);

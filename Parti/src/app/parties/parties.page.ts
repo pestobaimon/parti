@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
-import { partiUser, parties } from '../../models/user.model'
+import { partiUser, parties } from '../../models/data.model'
 import { PartiService } from '../../providers/parti.service';
 import * as moment from 'moment';
 
@@ -14,7 +14,7 @@ import * as moment from 'moment';
 export class PartiesPage {
 
   user: partiUser;
-  parties: Array<any>;
+  onGoingParties: Array<any>;
   pendingParties: Array<any>;
   itemExpandHeight: number = 200;
 
@@ -24,7 +24,7 @@ export class PartiesPage {
     private router: Router,
     private partiService: PartiService
     ) {
-      this.parties = [];
+      this.onGoingParties = [];
       this.pendingParties = [];
       this.authService.getUserData().subscribe(currUser => { /**currUser is emitted data */
         if(currUser){
@@ -38,7 +38,8 @@ export class PartiesPage {
           data.forEach(party=>{
             party["expanded"]=false;
           });
-          this.parties = data;
+          this.onGoingParties = data;
+          console.log(this.onGoingParties);
         }
       });
       this.partiService.getPendingParties().subscribe(data=>{

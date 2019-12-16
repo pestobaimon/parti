@@ -1,6 +1,6 @@
 import { Component, Injectable } from '@angular/core';
 import { GroupService } from '../../providers/group.service';
-import { partiUser } from '../../models/user.model';
+import { partiUser } from '../../models/data.model';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
 

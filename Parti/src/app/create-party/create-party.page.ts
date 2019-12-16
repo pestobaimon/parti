@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../providers/auth.service';
-import { partiUser, partiGroup, parties } from '../../models/user.model';
+import { partiUser, partiGroup, parties } from '../../models/data.model';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { GroupService } from '../../providers/group.service';
 import * as moment from 'moment';
@@ -133,8 +133,8 @@ export class CreatePartyPage implements OnInit {
         let pendingMembers:Array<any> = this.partiForm.get('friends').value;
         const startDate = new Date(this.partiForm.get('partiStart').value);
         const hoursBeforeStartToExp = this.partiForm.get('partiExpire').value;
-        const expdate = new Date(this.partiForm.get('partiStart').value);
-        expdate.setHours(expdate.getHours()-hoursBeforeStartToExp);
+        let expdate = new Date(this.partiForm.get('partiStart').value);
+        expdate.setHours(expdate.getHours()-Number(hoursBeforeStartToExp));
         
         this.submitAttempt = true;
 
@@ -191,6 +191,7 @@ export class CreatePartyPage implements OnInit {
                 members: [currUser],
                 memberIds: [currUser.uid],
                 isFull:false,
+                isExpired:false
             }             
             this.startParti(partiCreated);
             
