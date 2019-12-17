@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GroupService } from '../../providers/group.service';
 import { AuthService } from '../../providers/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -7,13 +7,14 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';
 import { AlertService } from '../../providers/alert.service';
+import { takeUntilNgDestroy } from 'take-until-ng-destroy';
 
 @Component({
   selector: 'app-edit-group',
   templateUrl: './edit-group.page.html',
   styleUrls: ['./edit-group.page.scss'],
 })
-export class EditGroupPage implements OnInit {
+export class EditGroupPage implements OnDestroy {
 
   addUserForm:FormGroup;
   members:Array<any>;
@@ -32,10 +33,11 @@ export class EditGroupPage implements OnInit {
     private events: Events,
     private alertService: AlertService
   ) {
-    this.authService.getUserData().subscribe(data=>{
+    this.authService.getUserData().pipe(takeUntilNgDestroy(this)).subscribe(data=>{
       this.user = data;
       this.afs.collection('groups').doc<partiGroup>(this.groupId)
         .valueChanges()
+        .pipe(takeUntilNgDestroy(this))
         .subscribe(data=>{
           if(data){
             this.group = data;
@@ -60,7 +62,8 @@ export class EditGroupPage implements OnInit {
         })
     });
   }
-  ngOnInit() {
+  ngOnDestroy(){
+
   }
   addMembers(){
     let membersToAdd:Array<any> = [];

@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../providers/auth.service';
@@ -9,13 +9,14 @@ import * as moment from 'moment';
 import { AlertService } from '../../providers/alert.service';
 import { Events } from '@ionic/angular';
 import { PartiService } from '../../providers/parti.service';
+import { takeUntilNgDestroy } from 'take-until-ng-destroy';
 
 @Component({
   selector: 'app-create-party',
   templateUrl: 'create-party.page.html',
   styleUrls: ['create-party.page.scss'],
 })
-export class CreatePartyPage implements OnInit {
+export class CreatePartyPage implements OnDestroy {
 
 	@ViewChild('signupSlider',{static:false}) signupSlider;
 
@@ -46,12 +47,12 @@ export class CreatePartyPage implements OnInit {
             this.submitAttempt = false;
             this.startDateSelected = false;
             console.log(this.today);
-            this.groupService.getGroups().subscribe(data=>{
+            this.groupService.getGroups().pipe(takeUntilNgDestroy(this)).subscribe(data=>{
                 if(data && data.length){
                     this.groups=data;
                 }
             });
-            this.authService.getUserData().subscribe(data=>{
+            this.authService.getUserData().pipe(takeUntilNgDestroy(this)).subscribe(data=>{
                 if(data){
                     this.user = data;
                     this.friendArray = data.friends;
@@ -71,7 +72,7 @@ export class CreatePartyPage implements OnInit {
                 groups: [''],
                 friends:['']
             });
-            this.partiForm.valueChanges.subscribe(data=>{
+            this.partiForm.valueChanges.pipe(takeUntilNgDestroy(this)).subscribe(data=>{
                 if(data){
                     if(data.partiStart){
                         this.startDate = data.partiStart;
@@ -199,9 +200,6 @@ export class CreatePartyPage implements OnInit {
             console.log('failed');
         }
     }
-    ngOnInit(){
-
-    }
     startParti(parti:parties){
         this.alertService.createPartiAlert();
         this.events.subscribe('parti:start',()=>{
@@ -210,6 +208,9 @@ export class CreatePartyPage implements OnInit {
     }
     logGroups(){
         console.log(this.groups);
+    }
+    ngOnDestroy(){
+
     }
 
 }

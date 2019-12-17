@@ -1,8 +1,9 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, OnDestroy } from '@angular/core';
 import { GroupService } from '../../providers/group.service';
 import { partiUser } from '../../models/data.model';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
+import { takeUntilNgDestroy } from 'take-until-ng-destroy';
 
 
 @Component({
@@ -11,18 +12,18 @@ import { Router } from '@angular/router';
   styleUrls: ['groups.page.scss']
 })
 @Injectable({providedIn:'root'})
-export class GroupsPage {
+export class GroupsPage implements OnDestroy {
   constructor(
     private groupService : GroupService,
     private authService : AuthService,
     private router: Router,
   ){
-    this.groupService.getGroups().subscribe(data=>{
+    this.groupService.getGroups().pipe(takeUntilNgDestroy(this)).subscribe(data=>{
       if(data){
         this.groups = data;
       }
     });
-    this.authService.getUserData().subscribe(userData=>{
+    this.authService.getUserData().pipe(takeUntilNgDestroy(this)).subscribe(userData=>{
       if(userData){
         this.user = userData;
       }      
@@ -35,12 +36,13 @@ export class GroupsPage {
   createGroup(groupName: string,members: Array<any>){
     this.groupService.createGroup(groupName,members);
   }
-  ngOnInit(){
-  }
   goToCreateGroup(){
     this.router.navigate(['create-group']);
   }
   editGroup(groupId:string){
     this.groupService.editGroup(groupId);
+  }
+  ngOnDestroy(){
+
   }
 }
