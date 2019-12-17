@@ -79,10 +79,10 @@ export class PartiService implements OnDestroy{
             }else{
                 isFull = false;
             }
-            var newPending = [];
-            var newPendingUid = [];
-            var newMembers = [];
-            var newMemberIds = [];
+            let newPending = [];
+            let newPendingUid = [];
+            let newMembers = [];
+            let newMemberIds = [];
             parti.pendingMembers.forEach(member=>{
                 if(member.uid!=this.uid){
                     newPending.push(member);
