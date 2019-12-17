@@ -16,6 +16,7 @@
           <ion-label>
             {{member.displayName}} 
           </ion-label>
+          <ion-button fill="outline" slot="end" (click)="viewProfile(member.uid)">view profile</ion-button>
           <ion-button fill="outline" slot="end" (click)="confirmRemove(member.uid,member.displayName)">remove from group</ion-button>
       </ion-item>
     </ion-list>
@@ -32,8 +33,7 @@
             </ion-item>
           </ion-list>
           <div>
-            <ion-button ion-button type="submit" >add members</ion-button>
-            
+            <ion-button ion-button type="submit" >add members</ion-button>          
             <ion-button (click)="leaveGroup()" style="float:right">Leave Group</ion-button>
           </div>
       </form>

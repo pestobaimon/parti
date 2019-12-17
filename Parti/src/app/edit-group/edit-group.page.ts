@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';
 import { AlertService } from '../../providers/alert.service';
 import { takeUntilNgDestroy } from 'take-until-ng-destroy';
+import { FriendService } from 'src/providers/friend.service';
 
 @Component({
   selector: 'app-edit-group',
@@ -31,7 +32,8 @@ export class EditGroupPage implements OnDestroy {
     private afs: AngularFirestore,
     private router: Router,
     private events: Events,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private  friendService:  FriendService
   ) {
     this.authService.getUserData().pipe(takeUntilNgDestroy(this)).subscribe(data=>{
       this.user = data;
@@ -62,9 +64,7 @@ export class EditGroupPage implements OnDestroy {
         })
     });
   }
-  ngOnDestroy(){
-
-  }
+  ngOnDestroy(){}
   addMembers(){
     let membersToAdd:Array<any> = [];
     this.nonMembers.forEach(user=>{
@@ -91,5 +91,8 @@ export class EditGroupPage implements OnDestroy {
       console.log(this.user.uid,'left');
       this.back();
     });
+  }
+  viewProfile(uid:string){
+    this.friendService.goToFriendProfile(uid);
   }
 }
