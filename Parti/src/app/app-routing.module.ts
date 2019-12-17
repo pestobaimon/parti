@@ -61,6 +61,10 @@ const routes: Routes = [
   {
     path: 'parti-detail',
     loadChildren: () => import('./parti-detail/parti-detail.module').then( m => m.PartiDetailPageModule)
+  },
+  {
+    path: 'friend-profile',
+    loadChildren: () => import('./friend-profile/friend-profile.module').then( m => m.FriendProfilePageModule)
   }
 ];
 @NgModule({
