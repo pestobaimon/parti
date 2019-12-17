@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../providers/auth.service';
 import { partiUser } from '../../models/data.model';
@@ -6,12 +6,14 @@ import { GroupService } from '../../providers/group.service';
 import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';
 import { AlertService } from '../../providers/alert.service';
+import { takeUntil } from 'rxjs/operators';
+import { takeUntilNgDestroy } from 'take-until-ng-destroy';
 @Component({
   selector: 'app-create-group',
   templateUrl: './create-group.page.html',
   styleUrls: ['./create-group.page.scss'],
 })
-export class CreateGroupPage implements OnInit {
+export class CreateGroupPage implements OnInit, OnDestroy {
   form:FormGroup;
   user:partiUser;
   friendArray: Array<any>;
@@ -26,7 +28,7 @@ export class CreateGroupPage implements OnInit {
     private alertService : AlertService
   ) {}
   ngOnInit() {
-    this.authService.getUserData().subscribe(data=>{
+    this.authService.getUserData().pipe(takeUntilNgDestroy(this)).subscribe(data=>{
       if(data){
         this.friendArray = data.friends;
         this.user = data;
@@ -37,7 +39,9 @@ export class CreateGroupPage implements OnInit {
       }
     })
   }
-  
+  ngOnDestroy(){
+
+  }
   createGroup(groupName: string){
     if(groupName){
     this.groupMembers = []

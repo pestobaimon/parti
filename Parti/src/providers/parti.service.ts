@@ -1,10 +1,12 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { parties, partiUser } from '../models/data.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from './alert.service';
 import { AuthService } from './auth.service';
+import { takeUntil } from 'rxjs/operators';
+import { takeUntilNgDestroy } from 'take-until-ng-destroy';
 
 import * as $ from 'jquery';
 
@@ -12,41 +14,46 @@ import { Router } from '@angular/router';
 
 
 @Injectable({providedIn:'root'})
-export class PartiService{
+export class PartiService implements OnDestroy{
+
+    private user:partiUser;
+    private uid = this.afAuth.auth.currentUser.uid;
+    private pendingCollection = this.afs.collection<parties>('parties',ref => ref.where('isExpired','==',false).where('pendingMemberIds','array-contains',this.uid));
+    private acceptedCollection = this.afs.collection<parties>('parties',ref=> ref.where('isExpired','==',false).where('memberIds','array-contains',this.uid))
+    public partiIDtoshow:string;
+    public refresh$: Subject<void>;
+
     constructor(
         private afs:AngularFirestore,
         private afAuth: AngularFireAuth,
         private alertService: AlertService,
         private authService: AuthService,
         private router: Router
-    ){    
-        this.authService.getUserData().subscribe(data=>{
+    ){   
+        this.refresh$ = new Subject<void>(); 
+        this.authService.getUserData().pipe(takeUntilNgDestroy(this)).subscribe(data=>{
             this.user = data;
         });
-        this.acceptedCollection.valueChanges().subscribe(partiArray => {
+        this.acceptedCollection.valueChanges().pipe(takeUntilNgDestroy(this)).subscribe(partiArray => {
             partiArray.forEach(parti => { 
                 if(parti.exptime.seconds<Math.floor(Date.now() / 1000)){
                     this.afs.collection('parties').doc(parti.partyId).update({isExpired:true});
-                }else{
-                    console.log('parti not expired');
+                    this.alertService.inputAlert(parti.partyName+' has expired');
+                    this.refresh$.next();
                 }
             });
         });
-        this.pendingCollection.valueChanges().subscribe(partiArray => {
+        this.pendingCollection.valueChanges().pipe(takeUntilNgDestroy(this)).subscribe(partiArray => {
             partiArray.forEach(parti => { 
                 if(parti.exptime.seconds<Math.floor(Date.now() / 1000)){
                     this.afs.collection('parties').doc(parti.partyId).update({isExpired:true});
-                }else{
-                    console.log('parti not expired');
+                    this.alertService.inputAlert(parti.partyName+' has expired');
+                    this.refresh$.next();
                 }
             });
         });
     }
-    private user:partiUser;
-    private uid = this.afAuth.auth.currentUser.uid;
-    private pendingCollection = this.afs.collection<parties>('parties',ref => ref.where('isExpired','==',false).where('pendingMemberIds','array-contains',this.uid));
-    private acceptedCollection = this.afs.collection<parties>('parties',ref=> ref.where('isExpired','==',false).where('memberIds','array-contains',this.uid))
-    public partiIDtoshow:string;
+
 
     getOngoingParties():Observable<any[]>{
         return this.acceptedCollection.valueChanges();
@@ -160,6 +167,10 @@ export class PartiService{
     partiDetail(partiID:string){
         this.partiIDtoshow = partiID;
         this.router.navigate(["parti-detail"]);
+
+    }
+
+    ngOnDestroy(){
 
     }
 }

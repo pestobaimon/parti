@@ -1,29 +1,30 @@
-import { Component } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
 import { partiUser, parties } from '../../models/data.model'
 import { PartiService } from '../../providers/parti.service';
 import * as moment from 'moment';
+import { takeUntilNgDestroy } from 'take-until-ng-destroy';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-parties',
   templateUrl: 'parties.page.html',
   styleUrls: ['parties.page.scss']
 })
-export class PartiesPage {
-
+export class PartiesPage implements OnDestroy {
+  unsubscribe$: Subject<void>;
   user: partiUser;
   onGoingParties: Array<any>;
   pendingParties: Array<any>;
   itemExpandHeight: number = 200;
-
   constructor(
-    private afAuth: AngularFireAuth,
     private authService: AuthService,
     private router: Router,
     private partiService: PartiService
     ) {
+      this.unsubscribe$  = new Subject<void>();
       this.onGoingParties = [];
       this.pendingParties = [];
       this.authService.getUserData().subscribe(currUser => { /**currUser is emitted data */
@@ -32,28 +33,35 @@ export class PartiesPage {
           console.log(currUser);
         }
       }); /**always update change in current user */
-      this.partiService.getOngoingParties().subscribe(data=>{
-        if(data && data.length){
-          console.log('parties found');
-          data.forEach(party=>{
-            party["expanded"]=false;
-          });
-          this.onGoingParties = data;
-          console.log(this.onGoingParties);
-        }
+      this.partiService.refresh$.pipe(takeUntilNgDestroy(this)).subscribe(()=>{
+        this.refreshParty();
       });
-      this.partiService.getPendingParties().subscribe(data=>{
-        if(data){
-          data.forEach(party=>{
-            party["expanded"]=false;
-          });
-          this.pendingParties = data;
-          console.log(this.pendingParties);
-        }        
-      });
+      this.partiService.refresh$.next();
     }
 
-  ngOnInit(){
+  refreshParty(){
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    this.partiService.getOngoingParties().pipe(takeUntil(this.unsubscribe$)).subscribe(data=>{
+      if(data && data.length){
+        data.forEach(party=>{
+          party["expanded"]=false;
+        });
+        this.onGoingParties = data;
+      }else{
+        this.onGoingParties = [];
+      }
+    });
+    this.partiService.getPendingParties().pipe(takeUntil(this.unsubscribe$)).subscribe(data=>{
+      if(data){
+        data.forEach(party=>{
+          party["expanded"]=false;
+        });
+        this.pendingParties = data;
+      }else{
+        this.pendingParties = [];
+      }   
+    });
   }
   goToPage(page:string){
     this.router.navigate([page]);
@@ -89,5 +97,10 @@ export class PartiesPage {
   }
   partiDetail(partiID:string){
     this.partiService.partiDetail(partiID);
+  }
+
+  ngOnDestroy(){
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
