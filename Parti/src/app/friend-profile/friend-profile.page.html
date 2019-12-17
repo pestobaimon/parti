@@ -1,25 +1,23 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header *ngIf="user">
+  <ion-toolbar color="primary">
     <ion-title class='ion-text-center'>
-      Profile
+      {{user.displayName}}
     </ion-title>
-    <ion-buttons slot="end">
-        <ion-button (click)="signOut()"><ion-icon slot="start" name="log-out"></ion-icon> Sign Out</ion-button>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()"><ion-icon slot="start" name="arrow-back"></ion-icon> Back</ion-button>
     </ion-buttons>
     <div slot='end'class="div-comp"></div>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
 
+<ion-content class="ion-padding">
   <div>
     <div>
       <img [src]="user?.profilePic" style="width: 160px;height: 240;" alt="your image">
       
     </div>
-    <ion-button (click)="changeProfilePic()">change pic</ion-button>
     <ion-item lines="none">
         <div *ngIf="user" >Display name: {{user.displayName}}</div>
-        <ion-button (click)="goToEditName()" slot='end'>change</ion-button>
     </ion-item>
     <ion-item lines="none">
         <div *ngIf="user" >Email: {{user.email}}</div>
@@ -28,13 +26,13 @@
   
   <div>
     <h4 class="ion-text-center">friends </h4> 
-    <ion-button (click)="goToFindFriendsPage()">find friends</ion-button>
     <div *ngIf="friends">
       <ion-item *ngFor="let friend of friends">
-      <ion-label>{{friend.displayName}}</ion-label>
-      <ion-button fill="outline" slot="end" (click)="viewProfile(friend.uid)">view profile</ion-button>
+        <ion-label>{{friend.displayName}}</ion-label>
+        <ion-button fill="outline" slot="end" (click)="viewProfile(friend.uid)">view profile</ion-button>
       </ion-item>
     </div>
+    
   </div>
 
 

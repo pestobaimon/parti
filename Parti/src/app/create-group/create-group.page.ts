@@ -6,7 +6,6 @@ import { GroupService } from '../../providers/group.service';
 import { Router } from '@angular/router';
 import { Events } from '@ionic/angular';
 import { AlertService } from '../../providers/alert.service';
-import { takeUntil } from 'rxjs/operators';
 import { takeUntilNgDestroy } from 'take-until-ng-destroy';
 @Component({
   selector: 'app-create-group',
