@@ -7,19 +7,7 @@
     padding: 0;
   }
 }
+
 ion-content{
-  --ion-background-color: rgb(250, 247, 236);
+  --ion-background-color:#fbfcfa;
 }
-
-ion-header{
-  --ion-background-color: rgb(255, 208, 78);
-}
-// Add percentage of white to a color
-@function tint($color, $percent){
-  @return mix(white, $color, $percent);
-}
-
-// Add percentage of black to a color
-@function shade($color, $percent){
-  @return mix(black, $color, $percent);
-} 
