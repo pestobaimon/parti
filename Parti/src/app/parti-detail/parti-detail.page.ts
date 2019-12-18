@@ -21,7 +21,8 @@ export class PartiDetailPage implements OnDestroy {
   members:Array<any>;
   pending:Array<any>;
   percentage:string = "0%";
-
+  minpercent:string = "0%";
+  leftover: string = "0%";
   constructor(
     private partiService: PartiService,
     private afs: AngularFirestore,
@@ -35,6 +36,12 @@ export class PartiDetailPage implements OnDestroy {
       this.partiToView = party;
       this.members= party.members;
       this.pending = party.pendingMembers;
+      this.percentage = party.memberCount/party.maxMembers*100 + "%";
+      console.log(this.percentage);
+      this.minpercent = (party.minMembers/party.maxMembers*100) + "%";
+      console.log(this.minpercent);
+      this.leftover = ((party.maxMembers/party.maxMembers*100)-(party.minMembers/party.maxMembers*100)) + "%";
+      console.log(this.leftover)
       this.percentage = party.memberCount/party.maxMembers*100 + "%";
     })
   }

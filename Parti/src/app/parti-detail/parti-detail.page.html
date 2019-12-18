@@ -48,5 +48,14 @@
     <ion-item>
         <strong>Minimum member: </strong>{{partiToView.minMembers}}
     </ion-item>
+    <ion-item>
+    <div class="meter" style="width: 100%">
+    <div class="meter-min" [style.width]="minpercent"><b>minimum</b></div>
+    <div class="meter-curr" [style.width]="percentage"><p>current members</p></div>
+    <div class="meter-left" [style.width]="leftover"><p>available</p></div>
+    </div>
+    </ion-item>
   </ion-list>
 </ion-content>
+
+

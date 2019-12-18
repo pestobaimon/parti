@@ -10,6 +10,10 @@
   }
 }
 
+.bg{
+  background: rgb(18, 128, 18);
+}
+
 // Add percentage of white to a color
 @function tint($color, $percent){
   @return mix(white, $color, $percent);
