@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth'
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { partiUser } from '../models/user.model'
-import { Observable, of, Subject } from 'rxjs';
+import { partiUser } from '../models/data.model'
+import { Observable, of } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators'
 import { AlertService } from './alert.service';
 

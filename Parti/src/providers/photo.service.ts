@@ -68,9 +68,6 @@ export class PhotoService {
         // The storage Ref
         const ref = this.storage.ref(path);
     
-        // Totally optional metadata
-        const customMetadata = { app: 'My AngularFire-powered PWA!' };
-    
         // The main task
         this.task = ref.putString(base64Image,'data_url');
     

@@ -8,7 +8,7 @@ import { NavController } from '@ionic/angular';
   templateUrl: './edit-name.page.html',
   styleUrls: ['./edit-name.page.scss'],
 })
-export class EditNamePage implements OnInit {
+export class EditNamePage {
 
   displayName:string;
   constructor(
@@ -23,8 +23,6 @@ export class EditNamePage implements OnInit {
     }else{
       this.authService.updateDisplayName(name);
     }
-  }
-  ngOnInit() {
   }
   goBack(){
     this.navCtrl.back();

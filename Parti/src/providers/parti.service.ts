@@ -1,34 +1,65 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { AngularFirestore } from '@angular/fire/firestore';
-import { parties, partiUser } from '../models/user.model';
-import { Observable } from 'rxjs';
+import { parties, partiUser } from '../models/data.model';
+import { Observable, Subject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from './alert.service';
 import { AuthService } from './auth.service';
+import * as firebase from 'firebase';
+import { takeUntilNgDestroy } from 'take-until-ng-destroy';
 
 import * as $ from 'jquery';
 
 import { Router } from '@angular/router';
+import { NotificationService } from './notification.service';
 
 
 @Injectable({providedIn:'root'})
-export class PartiService{
+export class PartiService implements OnDestroy{
+
+    private user:partiUser;
+    private uid = this.afAuth.auth.currentUser.uid;
+    private pendingCollection = this.afs.collection<parties>('parties',ref => ref.where('isExpired','==',false).where('pendingMemberIds','array-contains',this.uid));
+    private acceptedCollection = this.afs.collection<parties>('parties',ref=> ref.where('isExpired','==',false).where('memberIds','array-contains',this.uid))
+    public partiIDtoshow:string;
+    public refresh$: Subject<void>;
+
     constructor(
         private afs:AngularFirestore,
         private afAuth: AngularFireAuth,
         private alertService: AlertService,
         private authService: AuthService,
-        private router: Router
-    ){    
-        this.authService.getUserData().subscribe(data=>{
+        private router: Router,
+        private notificationService: NotificationService
+    ){   
+        this.refresh$ = new Subject<void>(); 
+        this.authService.getUserData().pipe(takeUntilNgDestroy(this)).subscribe(data=>{
             this.user = data;
-        })
+        });
+        this.acceptedCollection.valueChanges().pipe(takeUntilNgDestroy(this)).subscribe(partiArray => {
+            partiArray.forEach(parti => { 
+                if(parti.exptime.seconds<Math.floor(Date.now() / 1000)){
+                    this.afs.collection('parties').doc(parti.partyId).update({isExpired:true});
+                    parti.memberIds.forEach(memberId=>{
+                        this.notificationService.addNotification((parti.partyName+' has expired!'),memberId);
+                    });
+                    this.refresh$.next();
+                }
+            });
+        });
+        this.pendingCollection.valueChanges().pipe(takeUntilNgDestroy(this)).subscribe(partiArray => {
+            partiArray.forEach(parti => { 
+                if(parti.exptime.seconds<Math.floor(Date.now() / 1000)){
+                    this.afs.collection('parties').doc(parti.partyId).update({isExpired:true});
+                    parti.pendingMemberIds.forEach(memberId=>{
+                        this.notificationService.addNotification((parti.partyName+' has expired!'),memberId);
+                    });
+                    this.refresh$.next();
+                }
+            });
+        });
     }
-    private user:partiUser;
-    private uid = this.afAuth.auth.currentUser.uid;
-    private pendingCollection = this.afs.collection('parties',ref => ref.where('pendingMemberIds','array-contains',this.uid));
-    private acceptedCollection = this.afs.collection('parties',ref=> ref.where('memberIds','array-contains',this.uid))
-    public partiIDtoshow:string;
+
 
     getOngoingParties():Observable<any[]>{
         return this.acceptedCollection.valueChanges();
@@ -54,10 +85,10 @@ export class PartiService{
             }else{
                 isFull = false;
             }
-            var newPending = [];
-            var newPendingUid = [];
-            var newMembers = [];
-            var newMemberIds = [];
+            let newPending = [];
+            let newPendingUid = [];
+            let newMembers = [];
+            let newMemberIds = [];
             parti.pendingMembers.forEach(member=>{
                 if(member.uid!=this.uid){
                     newPending.push(member);
@@ -92,6 +123,7 @@ export class PartiService{
                 pendingMembers: newPending,
                 pendingMemberIds: newPendingUid,
                 isFull: isFull,
+                isExpired: parti.isExpired
             }
             this.afs.collection('parties').doc(parti.partyId).update(updatedParty).then(()=>{
                 console.log('joined');
@@ -131,6 +163,7 @@ export class PartiService{
             pendingMembers: newPending,
             pendingMemberIds: newPendingIds,
             isFull: false,
+            isExpired: parti.isExpired
         }
         this.afs.collection('parties').doc(parti.partyId).update(updatedParty).then(()=>{
             console.log('removed member: ',memberToRemove.uid);
@@ -140,6 +173,10 @@ export class PartiService{
     partiDetail(partiID:string){
         this.partiIDtoshow = partiID;
         this.router.navigate(["parti-detail"]);
+
+    }
+
+    ngOnDestroy(){
 
     }
 }

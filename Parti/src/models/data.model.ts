@@ -4,7 +4,8 @@ export interface partiUser {
     email: string;
     friends?: any [];
     friendIds?: string [];
-    profilePic?:string;
+    profilePic:string;
+    notifications?:string [];
 }
 export interface partiGroup {
     groupName: string;  
@@ -17,7 +18,7 @@ export interface parties {
     partyId: string;
     partyName: string;
     partyType: string;
-    partyLeader: partiUser;
+    partyLeader: any;
     minMembers: number;
     maxMembers: any;
     memberCount:number;
@@ -29,7 +30,8 @@ export interface parties {
     members: Array<any>;
     memberIds:Array<any>;
     time: Date;
-    exptime: Date;
+    exptime: any;
     place: string;
     isFull:boolean;
+    isExpired:boolean;
 }

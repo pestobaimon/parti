@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
-import { partiGroup, partiUser, parties } from 'src/models/user.model';
+import { Component, OnDestroy } from '@angular/core';
+import { partiGroup, partiUser, parties } from 'src/models/data.model';
 import { PartiService } from 'src/providers/parti.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
 import { NavController } from '@ionic/angular';
+import { takeUntil } from 'rxjs/operators';
+import { takeUntilNgDestroy } from 'take-until-ng-destroy';
 
 
 @Component({
@@ -11,7 +13,7 @@ import { NavController } from '@ionic/angular';
   templateUrl: './parti-detail.page.html',
   styleUrls: ['./parti-detail.page.scss'],
 })
-export class PartiDetailPage {
+export class PartiDetailPage implements OnDestroy {
   group:partiGroup;
   user:partiUser;
   partiID:string = this.partiService.partiIDtoshow;
@@ -29,20 +31,18 @@ export class PartiDetailPage {
     console.log(this.partiID);
     this.afs.collection("parties").doc<parties>(this.partiID)
     .valueChanges()
+    .pipe(takeUntilNgDestroy(this))
     .subscribe(party=>{
       this.partiToView = party;
-      
       this.members= party.members;
-      
       this.pending = party.pendingMembers;
-      
-
       this.percentage = party.memberCount/party.maxMembers*100 + "%";
       console.log(this.percentage);
       this.minpercent = (party.minMembers/party.maxMembers*100) + "%";
       console.log(this.minpercent);
       this.leftover = ((party.maxMembers/party.maxMembers*100)-(party.minMembers/party.maxMembers*100)) + "%";
       console.log(this.leftover)
+      this.percentage = party.memberCount/party.maxMembers*100 + "%";
     })
   }
   goBack(){
@@ -55,5 +55,8 @@ export class PartiDetailPage {
   }
   back(){
 
+  }
+  ngOnDestroy(){
+    
   }
 }

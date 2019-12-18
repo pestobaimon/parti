@@ -56,9 +56,9 @@
         </app-expandable>
     </ion-card>
   </div>
-  <div *ngIf="parties.length">
+  <div *ngIf="onGoingParties.length">
       <h4 class="ion-text-center">Ongoing parties</h4>
-      <ion-card *ngFor="let party of parties" class="parti-card">
+      <ion-card *ngFor="let party of onGoingParties" class="parti-card">
           <ion-card-header color='primary' (click)="expandToggle(party,'card')">
               <ion-card-subtitle>{{party.partyType}} parti</ion-card-subtitle>
               <ion-icon *ngIf="!party.expanded" name="arrow-down" style="float:right; font-size: 20px;"></ion-icon>
@@ -101,7 +101,7 @@
       </ion-card>
   </div>
   <h4 class="ion-text-center" *ngIf="!pendingParties.length">No pending parties</h4>
-  <h4 class="ion-text-center" *ngIf="!parties.length">No ongoing parties</h4>
+  <h4 class="ion-text-center" *ngIf="!onGoingParties.length">No ongoing parties</h4>
 </ion-content>
 <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="goToPage('/create-party')">

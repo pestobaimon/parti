@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from './alert.service';
-import { partiGroup, partiUser } from '../models/user.model';
+import { partiGroup, partiUser } from '../models/data.model';
 import { Observable } from 'rxjs';
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
