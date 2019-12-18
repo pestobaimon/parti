@@ -6,13 +6,14 @@ import { AuthService } from './auth.service';
 import { take } from 'rxjs/operators'
 import { partiUser } from '../models/data.model';
 import * as firebase from 'firebase';
+import { NotificationService } from './notification.service';
 
 
 @Injectable({providedIn:'root'})
 export class AddFriendService{
     constructor(
         private afs : AngularFirestore,
-        private afAuth : AngularFireAuth,
+        private notificationService:NotificationService,
         private alertService: AlertService,
         private authService: AuthService
     ){}
@@ -40,18 +41,14 @@ export class AddFriendService{
                     email: friendIn.email
                 }
                 this.afs.collection('users').doc(user.uid).update({
-                    friends: firebase.firestore.FieldValue.arrayUnion(friendData)
-                });
-                this.afs.collection('users').doc(friendIn.uid).update({
-                    friends: firebase.firestore.FieldValue.arrayUnion(userData)
-                });
-                this.afs.collection('users').doc(user.uid).update({
+                    friends: firebase.firestore.FieldValue.arrayUnion(friendData),
                     friendIds: firebase.firestore.FieldValue.arrayUnion(friendData.uid)
                 });
                 this.afs.collection('users').doc(friendIn.uid).update({
-                    friendIds: firebase.firestore.FieldValue.arrayUnion(userData.uid)
+                    friendIds: firebase.firestore.FieldValue.arrayUnion(userData.uid),
+                    friends: firebase.firestore.FieldValue.arrayUnion(userData)
                 });
-                
+                this.notificationService.addNotification((user.displayName+' has added you!'),friendIn.uid);
                 this.alertService.inputAlert('Friend added!');
             }
         });
