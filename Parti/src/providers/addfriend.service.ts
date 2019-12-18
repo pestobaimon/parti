@@ -51,6 +51,7 @@ export class AddFriendService{
                 this.afs.collection('users').doc(friendIn.uid).update({
                     friendIds: firebase.firestore.FieldValue.arrayUnion(userData.uid)
                 });
+                
                 this.alertService.inputAlert('Friend added!');
             }
         });

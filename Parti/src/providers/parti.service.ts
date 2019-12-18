@@ -5,12 +5,13 @@ import { Observable, Subject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertService } from './alert.service';
 import { AuthService } from './auth.service';
-import { takeUntil } from 'rxjs/operators';
+import * as firebase from 'firebase';
 import { takeUntilNgDestroy } from 'take-until-ng-destroy';
 
 import * as $ from 'jquery';
 
 import { Router } from '@angular/router';
+import { NotificationService } from './notification.service';
 
 
 @Injectable({providedIn:'root'})
@@ -28,7 +29,8 @@ export class PartiService implements OnDestroy{
         private afAuth: AngularFireAuth,
         private alertService: AlertService,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private notificationService: NotificationService
     ){   
         this.refresh$ = new Subject<void>(); 
         this.authService.getUserData().pipe(takeUntilNgDestroy(this)).subscribe(data=>{
@@ -38,7 +40,9 @@ export class PartiService implements OnDestroy{
             partiArray.forEach(parti => { 
                 if(parti.exptime.seconds<Math.floor(Date.now() / 1000)){
                     this.afs.collection('parties').doc(parti.partyId).update({isExpired:true});
-                    this.alertService.inputAlert(parti.partyName+' has expired');
+                    parti.memberIds.forEach(memberId=>{
+                        this.notificationService.addNotification((parti.partyName+' has expired!'),memberId);
+                    });
                     this.refresh$.next();
                 }
             });
@@ -47,7 +51,9 @@ export class PartiService implements OnDestroy{
             partiArray.forEach(parti => { 
                 if(parti.exptime.seconds<Math.floor(Date.now() / 1000)){
                     this.afs.collection('parties').doc(parti.partyId).update({isExpired:true});
-                    this.alertService.inputAlert(parti.partyName+' has expired');
+                    parti.pendingMemberIds.forEach(memberId=>{
+                        this.notificationService.addNotification((parti.partyName+' has expired!'),memberId);
+                    });
                     this.refresh$.next();
                 }
             });

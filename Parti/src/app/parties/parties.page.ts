@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { takeUntilNgDestroy } from 'take-until-ng-destroy';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { NotificationService } from 'src/providers/notification.service';
 
 @Component({
   selector: 'app-parties',
@@ -22,14 +23,19 @@ export class PartiesPage implements OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private partiService: PartiService
+    private partiService: PartiService,
+    private notificationService: NotificationService
     ) {
       this.unsubscribe$  = new Subject<void>();
       this.onGoingParties = [];
       this.pendingParties = [];
-      this.authService.getUserData().subscribe(currUser => { /**currUser is emitted data */
+      this.authService.getUserData().pipe(takeUntilNgDestroy(this)).subscribe(currUser => { /**currUser is emitted data */
         if(currUser){
           this.user = currUser;
+          if(currUser.notifications){
+            this.notificationService.readNotifications(currUser.notifications);
+            this.notificationService.clearNotifications(currUser.uid);
+          }
           console.log(currUser);
         }
       }); /**always update change in current user */
